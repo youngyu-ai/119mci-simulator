@@ -75,7 +75,6 @@
       letter-spacing: 0.8px;
     }
 
-    /* iOS 風格 Switch 開關 */
     .switch-toggle {
       width: 46px;
       height: 26px;
@@ -153,166 +152,89 @@
   <main class="flex-1 flex flex-col">
 
     <!-- ========================================================================= -->
-    <!-- 分頁面一：檢傷追蹤系統 (字體加大 2px，1:1 復刻圖檔與依距離排序醫院列表) -->
+    <!-- 分頁面一：檢傷追蹤系統 (手機規格 Mobile First) -->
     <!-- ========================================================================= -->
     <section id="tab-mobile" class="tab-content flex-1 flex justify-center p-2 sm:p-4">
       <div class="w-full max-w-md bg-white border border-slate-300 rounded-2xl shadow-xl flex flex-col min-h-[690px] overflow-hidden relative">
 
-        <!-- [畫面 1-1] 案件列表 (檢傷追蹤系統_1_案件列表.jpg 1:1 復刻) -->
         <div id="mobile-view-cases" class="flex-1 flex flex-col">
-          <!-- 頂部黑底 Header -->
-          <div class="bg-[#38383a] text-white px-4 py-3 flex items-center justify-between shadow-sm">
-            <h2 class="text-[20px] font-bold tracking-wide">案件列表</h2>
-            <div class="flex items-center space-x-1 cursor-pointer hover:opacity-80">
-              <span class="text-[16px] font-medium">登出</span>
-              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-              </svg>
-            </div>
+          <div class="bg-[#38383a] text-white px-4 py-3 flex items-center justify-between">
+            <h2 class="text-[21px] font-bold tracking-wide">案件列表</h2>
+            <span class="text-xs bg-slate-700 px-2 py-0.5 rounded text-slate-300">巴陵分隊演習</span>
           </div>
-
-          <!-- 查詢條件區塊 (字體放大 2px) -->
-          <div class="p-3.5 bg-slate-50 border-b border-slate-200 text-[15px] space-y-2.5">
-            <div class="text-[17px] font-bold text-slate-800">開案時間</div>
+          <div class="p-3.5 bg-slate-50 border-b text-[14px] space-y-2.5">
             <div class="flex items-center space-x-2">
-              <span class="font-bold text-slate-700 w-14">日 期</span>
-              <div class="relative flex-1">
-                <input type="text" readonly value="2026/10/03" class="w-full border border-slate-300 rounded px-2 py-1.5 bg-white text-center text-[15px]">
-              </div>
+              <span class="font-semibold text-slate-600">開案時間</span>
+              <input type="text" readonly value="2026/09/28" class="border rounded p-1 flex-1 bg-white text-center">
               <span>~</span>
-              <div class="relative flex-1">
-                <input type="text" readonly value="2026/10/03" class="w-full border border-slate-300 rounded px-2 py-1.5 bg-white text-center text-[15px]">
-              </div>
+              <input type="text" readonly value="2026/09/28" class="border rounded p-1 flex-1 bg-white text-center">
             </div>
-
-            <div class="flex items-center space-x-2 pt-1">
-              <span class="font-bold text-slate-700 w-16">案發縣市</span>
-              <select class="border border-slate-300 rounded px-2 py-1.5 flex-1 bg-white text-[15px] text-blue-600 font-bold">
-                <option>請選擇 ▾</option>
-                <option selected>桃園市 ▾</option>
+            <div class="flex items-center space-x-2">
+              <span class="font-semibold text-slate-600">案發縣市</span>
+              <select class="border rounded p-1 flex-1 bg-white">
+                <option>桃園市</option>
               </select>
-              <button class="bg-[#ff7043] hover:bg-[#f4511e] text-white px-5 py-1.5 rounded-full font-bold text-[16px] flex items-center space-x-1 shadow transition">
-                <span>🔍 查詢</span>
-              </button>
+              <button class="bg-orange-500 text-white px-4 py-1 rounded font-bold">查詢</button>
             </div>
           </div>
-
-          <!-- 案件表格標頭 -->
-          <div class="grid grid-cols-12 bg-[#707072] text-white text-[15px] font-bold py-2 px-3 text-center">
-            <div class="col-span-3">開案時間</div>
-            <div class="col-span-4">大傷案號</div>
-            <div class="col-span-5">大傷名稱</div>
-          </div>
-
-          <!-- 案件列表 (預設第一個為 巴陵分隊練習案件) -->
-          <div class="flex-1 divide-y divide-slate-200 overflow-y-auto">
-            <!-- 第 1 筆：巴陵分隊練習案件 (點入進入第 2 頁) -->
-            <div onclick="showMobileView('list')" class="grid grid-cols-12 py-3 px-3 items-center text-[15px] hover:bg-sky-50 cursor-pointer bg-white transition">
-              <div class="col-span-3 text-slate-800 font-mono text-center text-[14px] leading-tight">
-                2026/<br>10/03<br>10:49
+          <div class="flex-1 divide-y divide-slate-200">
+            <div onclick="showMobileView('list')" class="p-3.5 hover:bg-blue-50 cursor-pointer transition flex flex-col space-y-1">
+              <div class="flex justify-between items-center text-[13px] text-slate-500">
+                <span>09/28 08:58:46</span>
+                <span class="bg-green-100 text-green-700 px-1.5 py-0.5 rounded font-mono text-[11px]">03260928085801</span>
               </div>
-              <div class="col-span-4 font-mono font-bold text-slate-800 text-center text-[14px]">
-                03261003104901
-              </div>
-              <div class="col-span-5 text-left pl-2">
-                <span class="text-blue-700 font-bold underline text-[16px]">巴陵分隊練習案件</span>
-              </div>
-            </div>
-
-            <!-- 其餘真實案件項目復刻 -->
-            <div class="grid grid-cols-12 py-3 px-3 items-center text-[15px] bg-[#fdfbf6] text-slate-600">
-              <div class="col-span-3 font-mono text-center text-[14px] leading-tight">2026/<br>10/03<br>04:11</div>
-              <div class="col-span-4 font-mono font-bold text-center text-[14px]">03261003042401</div>
-              <div class="col-span-5 text-left pl-2 text-slate-700">桃園市桃園區-第一大隊測試案件</div>
-            </div>
-
-            <div class="grid grid-cols-12 py-3 px-3 items-center text-[15px] bg-white text-slate-600">
-              <div class="col-span-3 font-mono text-center text-[14px] leading-tight">2026/<br>10/02<br>20:15</div>
-              <div class="col-span-4 font-mono font-bold text-center text-[14px]">03261002201501</div>
-              <div class="col-span-5 text-left pl-2 text-slate-700">中路分隊[大傷測試案件]</div>
-            </div>
-
-            <div class="grid grid-cols-12 py-3 px-3 items-center text-[15px] bg-[#fdfbf6] text-slate-600">
-              <div class="col-span-3 font-mono text-center text-[14px] leading-tight">2026/<br>10/02<br>20:05</div>
-              <div class="col-span-4 font-mono font-bold text-center text-[14px]">03261002200501</div>
-              <div class="col-span-5 text-left pl-2 text-slate-700">大園分隊[大傷測試案件]</div>
+              <div class="font-bold text-slate-900 text-[16px]">巴陵分隊大傷測試案件</div>
+              <div class="text-[13px] text-slate-500">點擊進入檢傷列表 ➔</div>
             </div>
           </div>
         </div>
 
-        <!-- [畫面 1-2] 檢傷列表 (檢傷追蹤系統_2_檢傷列表.jpg 1:1 復刻) -->
         <div id="mobile-view-list" class="flex-1 flex flex-col hidden">
-          <!-- 頂部黑底 Header -->
-          <div class="bg-[#38383a] text-white px-3 py-3 flex items-center justify-between shadow-sm">
-            <button onclick="showMobileView('cases')" class="p-1 hover:opacity-80">
-              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <h2 class="text-[20px] font-bold tracking-wide flex-1 text-center pr-6">檢傷列表</h2>
+          <div class="bg-[#38383a] text-white px-3 py-3 flex items-center justify-between">
+            <button onclick="showMobileView('cases')" class="text-xs font-bold text-slate-300 hover:text-white">❮ 案件列表</button>
+            <h2 class="text-[21px] font-bold">檢傷列表</h2>
+            <div class="w-12"></div>
           </div>
 
-          <!-- 開案時間與名稱卡片 -->
-          <div class="p-3 bg-white border-b border-slate-200 text-[15px] space-y-1">
-            <div class="text-slate-700 font-bold">開案時間 : <span class="font-mono font-bold text-slate-900">2026/10/03 10:49:04</span></div>
-            <div class="text-slate-700 font-bold">大傷名稱 : <span class="font-bold text-slate-900">巴陵分隊練習案件</span></div>
+          <div class="p-2.5 bg-slate-50 border-b text-[12px] space-y-0.5">
+            <div class="text-slate-700 font-bold">開案時間：<span class="font-semibold text-slate-900">2026/09/28 08:58:46</span></div>
+            <div class="text-slate-700 font-bold">大傷名稱：<span class="font-bold text-slate-900">巴陵分隊大傷測試案件</span></div>
           </div>
 
-          <!-- 傷票級別統計列 (1:1 復刻，字體加大 2px) -->
-          <div class="bg-white p-3 border-b border-slate-200">
-            <div class="flex items-center justify-between text-center">
-              <div class="text-[15px] font-bold text-slate-700 flex flex-col items-center">
-                <span>傷票級別</span>
-                <span class="mt-2 text-[14px]">傷票人數</span>
-              </div>
-              <div class="flex flex-col items-center">
-                <span class="bg-[#cfd4d8] text-slate-800 text-[13px] font-bold px-2 py-0.5 rounded">全部</span>
-                <span id="m-count-total" class="font-black text-[18px] mt-1.5">0</span>
-              </div>
-              <div class="flex flex-col items-center">
-                <span class="w-6 h-6 bg-[#333] rounded-[4px] inline-block"></span>
-                <span id="m-count-black" class="font-black text-[18px] mt-1.5">0</span>
-              </div>
-              <div class="flex flex-col items-center">
-                <span class="w-6 h-6 bg-[#ff3b50] rounded-[4px] inline-block"></span>
-                <span id="m-count-red" class="font-black text-[18px] mt-1.5">0</span>
-              </div>
-              <div class="flex flex-col items-center">
-                <span class="w-6 h-6 bg-[#ffcc00] rounded-[4px] inline-block"></span>
-                <span id="m-count-yellow" class="font-black text-[18px] mt-1.5">0</span>
-              </div>
-              <div class="flex flex-col items-center">
-                <span class="w-6 h-6 bg-[#34c759] rounded-[4px] inline-block"></span>
-                <span id="m-count-green" class="font-black text-[18px] mt-1.5">0</span>
-              </div>
+          <div class="bg-white p-2.5 border-b">
+            <div class="grid grid-cols-5 gap-1 text-center text-[13px]">
+              <div class="bg-slate-100 rounded p-1 font-bold text-slate-700 border">全部<br><span id="m-count-total" class="text-base font-black">0</span></div>
+              <div class="bg-slate-900 text-white rounded p-1 font-bold">黑<br><span id="m-count-black" class="text-base font-black">0</span></div>
+              <div class="bg-rose-500 text-white rounded p-1 font-bold">紅<br><span id="m-count-red" class="text-base font-black">0</span></div>
+              <div class="bg-amber-400 text-slate-900 rounded p-1 font-bold">黃<br><span id="m-count-yellow" class="text-base font-black">0</span></div>
+              <div class="bg-emerald-500 text-white rounded p-1 font-bold">綠<br><span id="m-count-green" class="text-base font-black">0</span></div>
             </div>
           </div>
 
-          <!-- 站別切換 (第一檢傷站 / 第二檢傷站) & 手動輸入 -->
-          <div class="p-2.5 flex justify-between items-center text-[15px] bg-[#eef1f4] border-b border-slate-200">
-            <select id="m-triage-station-select" class="border border-slate-300 rounded px-2.5 py-1.5 bg-white text-blue-600 font-bold text-[15px] focus:outline-none">
+          <div class="p-2.5 flex justify-between items-center text-[13px] bg-[#eef1f4] border-b border-slate-200">
+            <select id="m-triage-station-select" class="border border-slate-300 rounded px-2.5 py-1 bg-white text-blue-600 font-bold text-[14px]">
               <option value="第一檢傷站" selected>第一檢傷站 ▾</option>
               <option value="第二檢傷站">第二檢傷站 ▾</option>
             </select>
-            <button onclick="openCardPickerModal()" class="bg-[#5bc0de] hover:bg-[#31b0d5] text-white px-3 py-1.5 rounded font-bold text-[14px] flex items-center space-x-1 shadow-sm transition">
-              <span>▦ 手動輸入 ✎</span>
+            <button onclick="addNewSinglePatientPrompt()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded font-bold text-[13px] shadow-sm transition">
+              ＋ 新增傷患
             </button>
           </div>
 
-          <!-- 表格表頭 -->
-          <div class="grid grid-cols-12 bg-[#707072] text-white text-[15px] font-bold py-2 px-3 text-center">
+          <div class="grid grid-cols-12 bg-[#707072] text-white text-[14px] font-bold py-2 px-3 text-center">
             <div class="col-span-2">項次</div>
             <div class="col-span-4">患者姓名</div>
             <div class="col-span-3">檢傷編碼</div>
             <div class="col-span-3">檢傷資訊</div>
           </div>
 
-          <!-- 傷病患清單 -->
-          <div id="mobile-patients-container" class="flex-1 overflow-y-auto divide-y divide-slate-200">
-            <!-- 動態注入 -->
+          <div id="mobile-patients-container" class="flex-1 overflow-y-auto divide-y divide-slate-100">
+            <div class="text-center py-16 text-slate-400 text-[13px] px-4">
+              目前尚無檢傷資料<br>請點選右下角 QR-Code 圖案新增傷病患
+            </div>
           </div>
 
-          <!-- 右下角 QR-CODE 浮動按鈕 (點選不啟動相機，直接跳出序號選單) -->
+          <!-- 右下角 QR-CODE 浮動按鈕 -->
           <button onclick="openCardPickerModal()" class="absolute bottom-6 right-6 w-16 h-16 bg-gradient-to-tr from-cyan-400 to-blue-500 rounded-2xl shadow-xl flex items-center justify-center p-2.5 hover:scale-105 active:scale-95 transition">
             <div class="w-full h-full border-2 border-white rounded-lg flex items-center justify-center relative">
               <svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -326,28 +248,23 @@
           </button>
         </div>
 
-        <!-- [畫面 1-3] 檢傷分類卡 (檢傷追蹤系統_3_檢傷分類卡.jpg 1:1 復刻) -->
+        <!-- [畫面 1-3] 檢傷分類卡 -->
         <div id="mobile-view-detail" class="flex-1 flex flex-col hidden bg-[#f8f9fa]">
-          <!-- 頂部黑底 Header -->
-          <div class="bg-[#38383a] text-white px-3 py-3 flex items-center justify-between shadow-sm">
+          <div class="bg-[#38383a] text-white px-3 py-3 flex items-center justify-between">
             <button onclick="showMobileView('list')" class="p-1 hover:opacity-80">
               <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
               </svg>
             </button>
-            <h2 class="text-[20px] font-bold tracking-wide flex-1 text-center pr-6">檢傷分類卡</h2>
+            <h2 class="text-[21px] font-bold tracking-wider flex-1 text-center pr-6">檢傷分類卡</h2>
           </div>
 
-          <!-- 主滾動表單區域 (字體放大 2px) -->
-          <div class="flex-1 overflow-y-auto px-4 py-3.5 space-y-3.5 text-[15px] text-slate-800">
-            <!-- 檢傷資訊區 -->
+          <div class="flex-1 overflow-y-auto px-4 py-3.5 space-y-3.5 text-[14px] text-slate-800">
             <div>
-              <div class="font-bold text-[17px] text-black mb-2.5">檢傷資訊</div>
+              <div class="font-bold text-[16px] text-black mb-2.5">檢傷資訊</div>
 
-              <!-- 上半部：左側基本資料 + 右側檢傷級別 2x2 面板 -->
               <div class="flex items-start justify-between gap-2.5">
                 <div class="flex-1 space-y-3">
-                  <!-- 檢傷編碼 -->
                   <div class="flex items-center space-x-2">
                     <span class="w-20 font-bold text-black">檢傷編碼</span>
                     <div id="detail-card-id" class="bg-[#dcdcdc] text-black font-serif italic font-bold text-[18px] px-3 py-0.5 rounded-sm tracking-wider">
@@ -355,13 +272,11 @@
                     </div>
                   </div>
 
-                  <!-- 姓名 -->
                   <div class="flex items-center space-x-2">
                     <span class="w-20 font-bold text-black tracking-widest">姓 名</span>
                     <input type="text" id="detail-name" class="flex-1 border border-slate-300 rounded-sm px-2.5 py-1 bg-white text-[15px] focus:outline-none focus:border-blue-500">
                   </div>
 
-                  <!-- 年齡 (約 0 歲) -->
                   <div class="flex items-center space-x-1.5">
                     <span class="w-20 font-bold text-black tracking-widest">年 齡</span>
                     <span class="text-slate-600 font-medium">約</span>
@@ -370,7 +285,6 @@
                   </div>
                 </div>
 
-                <!-- 右側：檢傷級別 2x2 面板 (白底彩色外框，點選反白) -->
                 <div class="w-[115px] border border-slate-300 bg-[#f0f0f2] rounded-lg p-2 flex flex-col items-center shadow-sm">
                   <div class="text-[14px] font-bold text-slate-800 mb-2">檢傷級別</div>
                   <div class="grid grid-cols-2 gap-2">
@@ -390,7 +304,6 @@
                 </div>
               </div>
 
-              <!-- 性別與特徵照片 -->
               <div class="flex items-center justify-between mt-3">
                 <div class="flex items-center space-x-3">
                   <span class="w-20 font-bold text-black tracking-widest">性 別</span>
@@ -413,7 +326,6 @@
                 </div>
               </div>
 
-              <!-- 身分與身分證字號 -->
               <div class="flex items-center space-x-2 mt-3">
                 <span class="w-20 font-bold text-black tracking-widest">身 分</span>
                 <div class="relative flex-1 flex space-x-2">
@@ -426,7 +338,6 @@
                 </div>
               </div>
 
-              <!-- 患者特徵 -->
               <div class="mt-3">
                 <div class="flex items-center justify-between mb-1">
                   <span class="font-bold text-black">患者特徵</span>
@@ -439,14 +350,12 @@
                 <textarea id="detail-features" rows="2" placeholder="請簡述說明" class="w-full border border-slate-300 rounded-sm p-2 bg-white text-[15px] placeholder-slate-400 focus:outline-none"></textarea>
               </div>
 
-              <!-- 補充說明 -->
               <div class="mt-2.5">
                 <div class="font-bold text-black mb-1">補充說明</div>
                 <textarea id="detail-notes" rows="3" placeholder="請簡述說明" class="w-full border border-slate-300 rounded-sm p-2 bg-white text-[15px] placeholder-slate-400 focus:outline-none"></textarea>
               </div>
             </div>
 
-            <!-- 中央裝飾五點珠飾分隔線 -->
             <div class="py-2.5 flex items-center justify-center">
               <div class="flex-1 h-[1px] bg-slate-400"></div>
               <div class="flex items-center space-x-1.5 px-3">
@@ -459,21 +368,18 @@
               <div class="flex-1 h-[1px] bg-slate-400"></div>
             </div>
 
-            <!-- 後送資訊區 (字體放大 2px) -->
             <div class="space-y-3">
-              <!-- 救護站名 -->
               <div class="flex items-center justify-between">
                 <span class="font-bold text-[17px] text-black">後送資訊</span>
                 <div class="flex items-center space-x-2">
                   <span class="font-bold text-black">救護站名</span>
                   <select id="detail-station" class="border border-slate-300 rounded-sm px-2.5 py-1 bg-white text-blue-600 font-bold text-[14px] focus:outline-none">
-                    <option value="第一救護站" selected>第一救護站 ▾</option>
+                    <option value="第一救護站">第一救護站 ▾</option>
                     <option value="第二救護站">第二救護站 ▾</option>
                   </select>
                 </div>
               </div>
 
-              <!-- 車輛縣市與到達醫院 Switch (點選後變色) -->
               <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-2">
                   <span class="font-bold text-black">車輛縣市</span>
@@ -488,7 +394,6 @@
                 </div>
               </div>
 
-              <!-- 後送車輛 -->
               <div class="flex items-center space-x-2">
                 <span class="font-bold text-black">後送車輛</span>
                 <select id="detail-vehicle" onchange="handleVehicleChange(this)" class="border border-slate-300 rounded-sm px-2.5 py-1 bg-white text-blue-600 font-bold text-[14px] focus:outline-none">
@@ -513,22 +418,20 @@
                 <input type="text" id="detail-vehicle-other" placeholder="呼號/車牌名" class="flex-1 border border-slate-300 rounded-sm px-2.5 py-1 bg-white text-[14px] placeholder-slate-400 focus:outline-none">
               </div>
 
-              <!-- 後送醫院 (依使用者直線距離排序，1:1 復刻檢傷追蹤系統_3_檢傷分類卡_醫院列表.jpg) -->
+              <!-- 後送醫院 (依距離由近到遠排序) -->
               <div class="space-y-1">
                 <div class="flex items-center space-x-2">
                   <span class="font-bold text-black w-20">後送醫院</span>
-                  <select id="detail-hospital" onchange="handleHospitalChange(this)" class="border border-slate-300 rounded-sm px-2 py-1.5 flex-1 bg-white text-blue-700 font-bold text-[14px] focus:outline-none">
-                    <!-- 動態由 JavaScript 計算距離並由近至遠注入 -->
+                  <select id="detail-hospital" onchange="handleHospitalChange(this)" class="border border-slate-300 rounded-sm px-2.5 py-1.5 flex-1 bg-white text-blue-700 font-bold text-[14px] focus:outline-none">
+                    <!-- 動態注入 -->
                   </select>
                 </div>
-                <!-- 醫院其他輸入框 -->
                 <div class="flex items-center space-x-2 pt-1">
                   <span class="w-20 text-right text-slate-500 font-bold text-xs pr-1">其他:</span>
                   <input type="text" id="detail-hospital-other" placeholder="請輸入其他醫院" class="flex-1 border border-slate-300 rounded-sm px-2.5 py-1 bg-white text-[14px] placeholder-slate-400 focus:outline-none">
                 </div>
               </div>
 
-              <!-- TEMSIS ID -->
               <div class="flex items-center space-x-2 pt-1">
                 <span class="font-serif italic font-black text-[16px] tracking-tighter text-black">TEMSIS ID</span>
                 <div class="border border-slate-400 rounded p-0.5 bg-white flex items-center justify-center relative w-8 h-6 cursor-pointer">
@@ -545,7 +448,6 @@
               </div>
             </div>
 
-            <!-- 底部亮橘色儲存按鈕 -->
             <div class="pt-4 pb-4 flex flex-col items-center space-y-2">
               <button type="button" onclick="savePatientDetail()" class="w-56 py-2.5 bg-gradient-to-r from-[#ff7e36] to-[#ff5d22] text-white font-bold text-[18px] rounded-full shadow-md hover:opacity-90 active:scale-95 transition">
                 儲存
@@ -558,11 +460,11 @@
           </div>
         </div>
 
-        <!-- 傷卡序號快速挑選彈跳視窗 (H263601~H263650) -->
+        <!-- 傷卡序號快速挑選彈跳視窗 -->
         <div id="modal-card-picker" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden">
           <div class="bg-white rounded-2xl p-4 w-full max-w-sm max-h-[85vh] flex flex-col shadow-2xl">
             <div class="flex justify-between items-center border-b pb-2">
-              <h3 class="font-black text-base text-slate-800">選擇傷卡序號 (H263601~H263650)</h3>
+              <h3 class="font-black base text-slate-800">選擇傷卡序號 (H263601~H263650)</h3>
               <button onclick="closeCardPickerModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div class="text-xs text-slate-500 py-1">
@@ -582,7 +484,7 @@
     </section>
 
     <!-- ========================================================================= -->
-    <!-- 分頁面二：傷卡生成列印 (A3 滿版鏡像，4頁標準輸出) -->
+    <!-- 分頁面二：傷卡生成列印 (A3 滿版鏡像) -->
     <!-- ========================================================================= -->
     <section id="tab-print" class="tab-content flex-1 flex-col items-center p-3 sm:p-4 hidden">
       <div class="no-print bg-white p-4 rounded-xl shadow-md border border-slate-200 max-w-2xl w-full mb-4 flex flex-wrap items-center justify-between gap-3">
@@ -618,10 +520,9 @@
     </section>
 
     <!-- ========================================================================= -->
-    <!-- 分頁面三：大量傷病患救護管理系統 (字體全面 24px~27px，長庚 重度/40) -->
+    <!-- 分頁面三：大量傷病患救護管理系統 (字體 25px~28px，長庚 重度/40) -->
     <!-- ========================================================================= -->
     <section id="tab-commander" class="tab-content flex-1 flex-col bg-[#bfe2f5] p-2 sm:p-4 lg:p-5 hidden">
-      <!-- 頂部 Header -->
       <div class="bg-white/95 backdrop-blur rounded-t-lg p-3 sm:p-4 border-b border-sky-300 flex flex-wrap justify-between items-center shadow-sm gap-2">
         <div class="flex items-center space-x-3 sm:space-x-4">
           <svg class="w-10 h-10 sm:w-14 sm:h-14 flex-shrink-0" viewBox="0 0 100 100">
@@ -647,7 +548,6 @@
         </div>
       </div>
 
-      <!-- 案件概要與官方四色數據方塊 (24px~27px) -->
       <div class="bg-white/95 p-3.5 sm:p-5 border-b border-sky-200 flex flex-wrap justify-between items-center gap-4">
         <div class="text-[24px] sm:text-[25px] lg:text-[27px] space-y-2 text-slate-800 font-medium min-w-[300px] leading-relaxed">
           <div><span class="font-bold">大傷案件 : </span>巴陵分隊大傷測試案件  <span class="font-bold">目前狀態 : </span><span class="font-bold text-slate-900">進行中</span></div>
@@ -697,13 +597,12 @@
         </div>
       </div>
 
-      <!-- 主體架構：左側主表格 + 右側看板 -->
+      <!-- 主體架構 -->
       <div class="flex-1 flex flex-col lg:flex-row gap-4 sm:gap-5 mt-4">
 
-        <!-- 左側主工作內容區 -->
         <div class="flex-1 bg-white rounded-lg shadow-sm p-3.5 sm:p-5 flex flex-col min-w-0">
 
-          <!-- 【圖一】救護站列表 (首頁) -->
+          <!-- 【圖一】救護站列表 -->
           <div id="cmd-sub-view1" class="cmd-view flex-1 flex flex-col space-y-4">
             <div class="flex flex-wrap justify-between items-center text-[20px] sm:text-[24px] text-slate-700 gap-3">
               <div class="flex items-center space-x-2">
@@ -798,9 +697,11 @@
             <div class="flex flex-wrap justify-between items-center text-[20px] sm:text-[24px] gap-3 pt-1">
               <div class="flex items-center space-x-2">
                 <span>每頁顯示</span>
-                <select class="border border-slate-300 rounded px-2.5 py-1 bg-white font-medium text-[20px]">
-                  <option>5</option>
-                  <option>10</option>
+                <!-- ★ 支援 5 / 10 / 50 筆資料檢視 -->
+                <select id="v2-pagesize-select" onchange="renderCommanderPatientsView2()" class="border border-slate-300 rounded px-2.5 py-1 bg-white font-medium text-[20px]">
+                  <option value="5" selected>5</option>
+                  <option value="10">10</option>
+                  <option value="50">50</option>
                 </select>
                 <span>筆資料</span>
               </div>
@@ -868,7 +769,7 @@
             </div>
           </div>
 
-          <!-- 【圖三】後送醫院收治情形 -->
+          <!-- 【圖三】後送醫院收治情形 (只顯示有送醫中或已到院的醫院) -->
           <div id="cmd-sub-view3" class="cmd-view flex-1 flex flex-col space-y-4 hidden">
             <div class="flex flex-wrap items-center gap-2 sm:gap-3 border-b border-sky-300 pb-1.5">
               <button onclick="switchCommanderSubView('view2')" class="bg-[#7cb7d8] hover:bg-[#68a8cc] text-white px-6 sm:px-8 py-2.5 rounded-t font-bold text-[22px] sm:text-[25px] transition">
@@ -958,24 +859,23 @@
   <!-- ★ 1:1 復刻【傷患評估】專屬彈跳視窗 (未填寫項目一律保持空白) -->
   <!-- ========================================================================= -->
   <div id="modal-patient-info" onclick="if(event.target===this) closePatientInfoModal()" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-3 sm:p-6 hidden">
-    <div class="bg-white rounded-2xl p-6 sm:p-8 w-full max-w-4xl max-h-[92vh] flex flex-col shadow-2xl border border-slate-300 relative">
-      <button onclick="closePatientInfoModal()" class="absolute top-4 right-5 text-slate-400 hover:text-slate-700 text-3xl font-bold p-1">✕</button>
+    <div class="bg-white rounded-xl p-6 sm:p-8 w-full max-w-4xl max-h-[92vh] flex flex-col shadow-2xl border border-slate-300 relative">
+      <button onclick="closePatientInfoModal()" class="absolute top-3 right-4 text-slate-400 hover:text-slate-700 text-3xl font-bold p-1">✕</button>
 
-      <div class="flex-1 overflow-y-auto pr-2">
+      <div class="flex-1 overflow-y-auto pr-2 pt-1">
         <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
           
-          <!-- 左側欄位：傷患評估、檢傷編碼、姓名、電話、性別、年齡 (附縱向分隔線) -->
           <div class="md:col-span-4 flex flex-col justify-start md:border-r md:border-slate-300 pr-0 md:pr-6 space-y-4">
             <h3 class="text-[#2563eb] font-bold text-2xl tracking-wide">傷患評估</h3>
 
             <div class="space-y-1">
               <div class="font-black text-slate-900 text-xl">檢傷編碼:</div>
-              <div id="m-info-id" class="font-serif font-black text-2xl text-slate-900 tracking-wider min-h-[32px]"></div>
+              <div id="m-info-id" class="font-serif font-black text-2xl text-slate-900 tracking-wider min-h-[30px]"></div>
             </div>
 
             <div class="space-y-1">
               <div class="font-black text-slate-900 text-xl">姓名:</div>
-              <div id="m-info-name" class="font-bold text-2xl text-slate-900 min-h-[32px]"></div>
+              <div id="m-info-name" class="font-bold text-2xl text-slate-900 min-h-[30px]"></div>
             </div>
 
             <div class="space-y-1">
@@ -985,25 +885,24 @@
 
             <div class="space-y-1">
               <div class="font-black text-slate-900 text-xl">性別:</div>
-              <div id="m-info-gender" class="font-bold text-2xl text-slate-900 min-h-[32px]"></div>
+              <div id="m-info-gender" class="font-bold text-2xl text-slate-900 min-h-[30px]"></div>
             </div>
 
             <div class="space-y-1">
               <div class="font-black text-slate-900 text-xl">年齡:</div>
-              <div id="m-info-age" class="font-bold text-2xl text-slate-900 min-h-[32px]"></div>
+              <div id="m-info-age" class="font-bold text-2xl text-slate-900 min-h-[30px]"></div>
             </div>
           </div>
 
-          <!-- 右側欄位：特徵說明、補充說明 -->
           <div class="md:col-span-8 flex flex-col justify-between space-y-5">
             <div class="space-y-2">
               <h4 class="text-[#2563eb] font-bold text-2xl tracking-wide">特徵說明</h4>
-              <div id="m-info-features" class="w-full min-h-[140px] border border-slate-400 rounded-xl p-4 text-2xl text-slate-900 font-bold bg-white leading-relaxed whitespace-pre-wrap"></div>
+              <div id="m-info-features" class="w-full min-h-[140px] border border-slate-300 rounded-lg p-4 text-2xl text-slate-900 font-bold bg-white leading-relaxed whitespace-pre-wrap shadow-inner"></div>
             </div>
 
             <div class="space-y-2">
               <h4 class="text-[#2563eb] font-bold text-2xl tracking-wide">補充說明</h4>
-              <div id="m-info-notes" class="w-full min-h-[160px] border border-slate-400 rounded-xl p-4 text-2xl text-slate-900 font-bold bg-white leading-relaxed whitespace-pre-wrap"></div>
+              <div id="m-info-notes" class="w-full min-h-[160px] border border-slate-300 rounded-lg p-4 text-2xl text-slate-900 font-bold bg-white leading-relaxed whitespace-pre-wrap shadow-inner"></div>
             </div>
           </div>
 
@@ -1018,30 +917,28 @@
     const MQTT_TOPIC = 'tw_mci_baling_exercise_live_2026/data';
     const syncChannel = new BroadcastChannel('mci_sim_channel');
 
-    // ★ 官方收治醫院母冊 (依附圖完整配置，長庚 重度/40)
     const HOSPITALS_MASTER = [
-      { name: "復興鄉華陵整合醫療站", level: "輕度", cap: 10, dist: 5391, tag: "輕", tagBg: "bg-purple-200 text-purple-800", lat: 24.6980, lng: 121.3970 },
-      { name: "國軍桃園總醫院", level: "中度", cap: 20, dist: 21343, tag: "中", tagBg: "bg-purple-500 text-white", lat: 24.8621, lng: 121.2405 },
-      { name: "龍潭敏盛醫院", level: "輕度", cap: 15, dist: 22400, tag: "輕", tagBg: "bg-purple-200 text-purple-800", lat: 24.8680, lng: 121.2150 },
-      { name: "恩主公醫院", level: "中度", cap: 25, dist: 24415, tag: "中", tagBg: "bg-purple-500 text-white", lat: 24.9350, lng: 121.3650 },
-      { name: "華揚醫院", level: "輕度", cap: 10, dist: 28885, tag: "輕", tagBg: "bg-purple-200 text-purple-800", lat: 24.9550, lng: 121.2250 },
-      { name: "中壢長榮醫院", level: "輕度", cap: 12, dist: 28949, tag: "輕", tagBg: "bg-purple-200 text-purple-800", lat: 24.9600, lng: 121.2200 },
-      { name: "楊梅天成醫院", level: "輕度", cap: 10, dist: 28981, tag: "輕", tagBg: "bg-purple-200 text-purple-800", lat: 24.9080, lng: 121.1450 },
-      { name: "平鎮秉坤婦幼醫院", level: "輕度", cap: 10, dist: 29251, tag: "輕", tagBg: "bg-purple-200 text-purple-800", lat: 24.9420, lng: 121.2150 },
-      { name: "新國民醫院", level: "輕度", cap: 10, dist: 29267, tag: "輕", tagBg: "bg-purple-200 text-purple-800", lat: 24.9560, lng: 121.2220 },
-      { name: "平鎮陽明醫院", level: "輕度", cap: 10, dist: 29372, tag: "輕", tagBg: "bg-purple-200 text-purple-800", lat: 24.9450, lng: 121.2100 },
-      { name: "聯新國際醫院", level: "中度", cap: 20, dist: 29382, tag: "中", tagBg: "bg-purple-500 text-white", lat: 24.9460, lng: 121.2050 },
-      { name: "聖保祿醫院", level: "中度", cap: 15, dist: 29429, tag: "中", tagBg: "bg-purple-500 text-white", lat: 24.9850, lng: 121.3200 },
-      { name: "怡仁綜合醫院", level: "輕度", cap: 12, dist: 29763, tag: "輕", tagBg: "bg-purple-200 text-purple-800", lat: 24.9150, lng: 121.1600 },
-      { name: "宏其婦幼醫院", level: "輕度", cap: 10, dist: 29814, tag: "輕", tagBg: "bg-purple-200 text-purple-800", lat: 24.9600, lng: 121.2280 },
-      { name: "中壢天晟醫院", level: "中度", cap: 20, dist: 29858, tag: "中", tagBg: "bg-purple-500 text-white", lat: 24.9700, lng: 121.2320 },
-      { name: "桃園醫院", level: "重度", cap: 25, dist: 30066, tag: "重", tagBg: "bg-purple-800 text-white", lat: 24.9780, lng: 121.2680 },
-      { name: "宋俊宏婦幼醫院", level: "輕度", cap: 10, dist: 30092, tag: "輕", tagBg: "bg-purple-200 text-purple-800", lat: 24.9620, lng: 121.2150 },
-      { name: "桃園療養院", level: "輕度", cap: 10, dist: 30185, tag: "輕", tagBg: "bg-purple-200 text-purple-800", lat: 24.9800, lng: 121.2720 },
-      { name: "長庚", level: "重度", cap: 40, dist: 35000, tag: "重", tagBg: "bg-purple-800 text-white", lat: 25.0350, lng: 121.3680 }
+      { name: "復興鄉華陵整合醫療站", level: "輕度", cap: 10, dist: 5391 },
+      { name: "國軍桃園總醫院", level: "中度", cap: 20, dist: 21343 },
+      { name: "龍潭敏盛醫院", level: "輕度", cap: 15, dist: 22400 },
+      { name: "恩主公醫院", level: "中度", cap: 25, dist: 24415 },
+      { name: "華揚醫院", level: "輕度", cap: 10, dist: 28885 },
+      { name: "中壢長榮醫院", level: "輕度", cap: 12, dist: 28949 },
+      { name: "楊梅天成醫院", level: "輕度", cap: 10, dist: 28981 },
+      { name: "平鎮秉坤婦幼醫院", level: "輕度", cap: 10, dist: 29251 },
+      { name: "新國民醫院", level: "輕度", cap: 10, dist: 29267 },
+      { name: "平鎮陽明醫院", level: "輕度", cap: 10, dist: 29372 },
+      { name: "聯新國際醫院", level: "中度", cap: 20, dist: 29382 },
+      { name: "聖保祿醫院", level: "中度", cap: 15, dist: 29429 },
+      { name: "怡仁綜合醫院", level: "輕度", cap: 12, dist: 29763 },
+      { name: "宏其婦幼醫院", level: "輕度", cap: 10, dist: 29814 },
+      { name: "中壢天晟醫院", level: "中度", cap: 20, dist: 29858 },
+      { name: "桃園醫院", level: "重度", cap: 25, dist: 30066 },
+      { name: "宋俊宏婦幼醫院", level: "輕度", cap: 10, dist: 30092 },
+      { name: "桃園療養院", level: "輕度", cap: 10, dist: 30185 },
+      { name: "長庚", level: "重度", cap: 40, dist: 35000 }
     ];
 
-    // 實測種子數據：完全依據真實傷患資料，未填項目一律保持空白
     const DEFAULT_SEED_DATA = {
       "H00T517": { id: "H00T517", level: "black", name: "陳帶", age: 0, gender: "男", vehicle: "", hospital: "", arrived: false, time: "10:14:42", phone: "", features: "", notes: "" },
       "H00T511": { id: "H00T511", level: "red", name: "john", age: "", gender: "男", vehicle: "", hospital: "", arrived: false, time: "", phone: "", features: "", notes: "" },
@@ -1067,49 +964,23 @@
     let v2FilterLevel = 'ALL';
     let v2FilterStatus = 'ALL';
 
-    // 建立依直線距離排序之醫院選單 (由近至遠)
     function setupHospitalSelect() {
       const select = document.getElementById('detail-hospital');
       if (!select) return;
 
-      // 依距離由近到遠排序
       const sorted = [...HOSPITALS_MASTER].sort((a, b) => a.dist - b.dist);
 
       select.innerHTML = '<option value="">請選擇 ▾</option>';
       sorted.forEach(h => {
         const opt = document.createElement('option');
         opt.value = h.name;
-        opt.innerText = `${h.tag ? `[${h.tag}] ` : ''}${h.name} (約距${h.dist}公尺)`;
+        opt.innerText = `${h.name} (約距${h.dist}公尺)`;
         select.appendChild(opt);
       });
       const optOther = document.createElement('option');
       optOther.value = '其他';
       optOther.innerText = '其他 ▾';
       select.appendChild(optOther);
-    }
-
-    // 瀏覽器地理定位即時重新排序 (若有提供座標)
-    function tryGeoSortHospitals() {
-      if (!navigator.geolocation) return;
-      navigator.geolocation.getCurrentPosition(pos => {
-        const uLat = pos.coords.latitude;
-        const uLng = pos.coords.longitude;
-
-        HOSPITALS_MASTER.forEach(h => {
-          if (h.lat && h.lng) {
-            // 計算大圓距離 (公尺)
-            const R = 6371e3;
-            const φ1 = uLat * Math.PI/180;
-            const φ2 = h.lat * Math.PI/180;
-            const Δφ = (h.lat - uLat) * Math.PI/180;
-            const Δλ = (h.lng - uLng) * Math.PI/180;
-            const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ/2) * Math.sin(Δλ/2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-            h.dist = Math.round(R * c);
-          }
-        });
-        setupHospitalSelect();
-      }, () => {}, { timeout: 4000 });
     }
 
     function initCloudSync() {
@@ -1120,7 +991,6 @@
         patientsDB = { ...DEFAULT_SEED_DATA };
       }
       setupHospitalSelect();
-      tryGeoSortHospitals();
       updateAllViews();
 
       try {
@@ -1220,9 +1090,6 @@
       if (tabId === 'tab-commander') switchCommanderSubView(currentCmdView);
     }
 
-    /* =========================================================================
-       分頁面三子視圖切換：view1 (圖一) ➔ view2 (圖二) ➔ view3 (圖三)
-       ========================================================================= */
     function switchCommanderSubView(viewKey) {
       currentCmdView = viewKey;
       document.querySelectorAll('.cmd-view').forEach(v => v.classList.add('hidden'));
@@ -1256,7 +1123,6 @@
       renderCommanderPatientsView2();
     }
 
-    // 微型四色垂直堆疊方塊 HTML
     function buildStackedColorCellHtml(bCount, rCount, yCount, gCount) {
       return `
         <div class="flex flex-col items-start font-mono text-[18px] sm:text-[20px] leading-tight py-1 w-20 mx-auto">
@@ -1268,7 +1134,6 @@
       `;
     }
 
-    /* ------------------------- 全域數據計算與刷新 ------------------------- */
     function updateAllViews() {
       const list = Object.values(patientsDB);
       const total = list.length;
@@ -1282,14 +1147,12 @@
       const onsite = total - arrived - inTransit;
       const vehicleCount = new Set(list.filter(p => p.vehicle).map(p => p.vehicle)).size;
 
-      // 手機列表
       document.getElementById('m-count-total').innerText = total;
       document.getElementById('m-count-black').innerText = black;
       document.getElementById('m-count-red').innerText = red;
       document.getElementById('m-count-yellow').innerText = yellow;
       document.getElementById('m-count-green').innerText = green;
 
-      // 指揮端頂部四色方塊 (圖一、二、三)
       document.getElementById('c-badge-total').innerText = total;
       document.getElementById('c-badge-black').innerText = black;
       document.getElementById('c-badge-red').innerText = red;
@@ -1304,7 +1167,6 @@
       document.getElementById('c-pct-transit').innerText = `${transitPct}%`;
       document.getElementById('c-pct-transport').innerText = `${transportPct}%`;
 
-      // 右側看板數據
       const inTransitPct = total > 0 ? ((inTransit / total) * 100).toFixed(1) : "0.0";
       const arrivedPct = total > 0 ? ((arrived / total) * 100).toFixed(1) : "0.0";
       const onSiteRatioPct = total > 0 ? ((onsite / total) * 100).toFixed(1) : "0.0";
@@ -1317,7 +1179,6 @@
       document.getElementById('sb-pct-onsite').innerText = `${onSiteRatioPct}%`;
       document.getElementById('sb-count-vehicles').innerText = vehicleCount > 0 ? vehicleCount : 1;
 
-      // 刷新【圖一】救護站列表數據
       const stackTotalHtml = buildStackedColorCellHtml(black, red, yellow, green);
       const bOnsite = list.filter(p => !p.arrived && !p.vehicle && p.level === 'black').length;
       const rOnsite = list.filter(p => !p.arrived && !p.vehicle && p.level === 'red').length;
@@ -1349,7 +1210,6 @@
       renderCommanderHospitalsView3();
     }
 
-    // 渲染【分頁一第 2 頁】手機端檢傷列表 (1:1 復刻圖檔)
     function renderMobilePatientList() {
       const container = document.getElementById('mobile-patients-container');
       if (!container) return;
@@ -1357,8 +1217,8 @@
       const list = Object.values(patientsDB);
       if (list.length === 0) {
         container.innerHTML = `
-          <div class="text-center py-16 text-slate-400 text-xs px-4">
-            目前尚無檢傷資料<br>請點選右下角按鈕選擇傷卡編號進行登錄
+          <div class="text-center py-16 text-slate-400 text-[13px] px-4">
+            目前尚無檢傷資料<br>請點選右下角 QR-Code 圖案新增傷病患
           </div>
         `;
         return;
@@ -1382,20 +1242,20 @@
             <span class="font-bold text-slate-900 truncate">${p.name || '不詳'}</span>
           </div>
           <div class="col-span-3 text-center font-serif italic font-bold text-slate-900">${p.id}</div>
-          <div class="col-span-3 text-center">
-            <button onclick="openPatientForm('${p.id}')" class="text-blue-600 font-bold underline hover:text-blue-800 text-[15px]">
-              詳細
-            </button>
+          <div class="col-span-3 text-center flex items-center justify-center space-x-2">
+            <button onclick="openPatientForm('${p.id}')" class="text-blue-600 font-bold underline hover:text-blue-800 text-[15px]">詳細</button>
+            <button onclick="deleteSinglePatient('${p.id}')" class="text-red-500 font-bold hover:text-red-700 text-xs px-1" title="刪除">✕</button>
           </div>
         `;
         container.appendChild(row);
       });
     }
 
-    // 渲染【圖二】傷病患清單
+    // 渲染【圖二】傷病患清單 (★ 支援 5/10/50 筆資料動態分頁顯示)
     function renderCommanderPatientsView2() {
       const tbody = document.getElementById('v2-patients-tbody');
       const search = (document.getElementById('v2-search-input')?.value || '').toLowerCase();
+      const pageSize = parseInt(document.getElementById('v2-pagesize-select')?.value) || 5;
       
       let list = Object.values(patientsDB);
 
@@ -1413,15 +1273,16 @@
       }
 
       const totalMatching = list.length;
-      document.getElementById('v2-pagination-info').innerText = `顯示第 1 至 ${Math.min(5, totalMatching)} 筆資料，共 ${totalMatching} 筆`;
+      const displayList = list.slice(0, pageSize);
+      document.getElementById('v2-pagination-info').innerText = `顯示第 1 至 ${Math.min(pageSize, totalMatching)} 筆資料，共 ${totalMatching} 筆`;
 
-      if (list.length === 0) {
+      if (displayList.length === 0) {
         tbody.innerHTML = `<tr><td colspan="13" class="py-12 text-slate-400 font-bold bg-[#fbf8ea]">無資料</td></tr>`;
         return;
       }
 
       tbody.innerHTML = '';
-      list.forEach((p, idx) => {
+      displayList.forEach((p, idx) => {
         const st = p.arrived ? '已到院' : (p.vehicle || p.hospital ? '送醫中' : '現場');
         
         let codeBadgeColor = 'bg-[#1c1c1e] text-white';
@@ -1452,37 +1313,45 @@
       });
     }
 
-    // 渲染【圖三】後送醫院收治情形
+    // 渲染【圖三】後送醫院收治情形 (★ 修復：只顯示有送醫中或已到院的醫院)
     function renderCommanderHospitalsView3() {
       const tbody = document.getElementById('v3-hospitals-tbody');
       const search = (document.getElementById('v3-search-input')?.value || '').toLowerCase();
       const list = Object.values(patientsDB);
 
-      let hospList = HOSPITALS_MASTER;
+      // ★ 過濾邏輯：只保留「有送醫中」或「已到院」人數大於 0 的醫院
+      let activeHospList = HOSPITALS_MASTER.filter(hosp => {
+        const hospPatients = list.filter(p => p.hospital && p.hospital.trim() === hosp.name.trim());
+        const activeCount = hospPatients.filter(p => (p.vehicle || p.hospital || p.arrived)).length;
+        return activeCount > 0;
+      });
+
       if (search) {
-        hospList = hospList.filter(h => h.name.toLowerCase().includes(search));
+        activeHospList = activeHospList.filter(h => h.name.toLowerCase().includes(search));
+      }
+
+      if (activeHospList.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="py-12 text-slate-400 font-bold bg-[#fbf8ea]">目前尚無任何醫院有送醫中或已到院病患</td></tr>`;
+        return;
       }
 
       tbody.innerHTML = '';
-      hospList.forEach((hosp, idx) => {
-        const hospPatients = list.filter(p => (p.hospital || '').includes(hosp.name.slice(0, 2)));
+      activeHospList.forEach((hosp, idx) => {
+        const hospPatients = list.filter(p => p.hospital && p.hospital.trim() === hosp.name.trim());
         const totalSent = hospPatients.length;
 
-        // 送醫中
         const bTransit = hospPatients.filter(p => !p.arrived && (p.vehicle || p.hospital) && p.level === 'black').length;
         const rTransit = hospPatients.filter(p => !p.arrived && (p.vehicle || p.hospital) && p.level === 'red').length;
         const yTransit = hospPatients.filter(p => !p.arrived && (p.vehicle || p.hospital) && p.level === 'yellow').length;
         const gTransit = hospPatients.filter(p => !p.arrived && (p.vehicle || p.hospital) && p.level === 'green').length;
         const stackTransitHtml = buildStackedColorCellHtml(bTransit, rTransit, yTransit, gTransit);
 
-        // 已到院
         const bArrived = hospPatients.filter(p => p.arrived && p.level === 'black').length;
         const rArrived = hospPatients.filter(p => p.arrived && p.level === 'red').length;
         const yArrived = hospPatients.filter(p => p.arrived && p.level === 'yellow').length;
         const gArrived = hospPatients.filter(p => p.arrived && p.level === 'green').length;
         const stackArrivedHtml = buildStackedColorCellHtml(bArrived, rArrived, yArrived, gArrived);
 
-        // 總計
         const bTotal = hospPatients.filter(p => p.level === 'black').length;
         const rTotal = hospPatients.filter(p => p.level === 'red').length;
         const yTotal = hospPatients.filter(p => p.level === 'yellow').length;
@@ -1492,12 +1361,12 @@
         const rowBg = idx % 2 === 0 ? 'bg-white' : 'bg-[#fbf8ea]';
 
         const tr = document.createElement('tr');
-        tr.className = `h-28 hover:bg-sky-50 text-[24px] sm:text-[28px] ${rowBg}`;
+        tr.className = `h-28 hover:bg-sky-50 text-[24px] sm:text-[27px] ${rowBg}`;
         tr.innerHTML = `
           <td class="font-bold text-slate-900 text-left pl-8 text-[25px] sm:text-[28px]">${hosp.name}</td>
           <td class="font-medium text-slate-700">${hosp.level}</td>
           <td class="font-mono text-slate-700 font-bold">${hosp.cap}</td>
-          <td class="font-bold text-slate-900 text-[25px] sm:text-[28px]">${totalSent > 0 ? totalSent : 1}</td>
+          <td class="font-bold text-slate-900 text-[25px] sm:text-[28px]">${totalSent > 0 ? totalSent : '-'}</td>
           <td>${stackTransitHtml}</td>
           <td>${stackArrivedHtml}</td>
           <td>${stackTotalHtml}</td>
@@ -1506,9 +1375,7 @@
       });
     }
 
-    /* =========================================================================
-       1:1 復刻【傷患評估】專屬彈跳視窗載入 (未填寫項目一律保持空白)
-       ========================================================================= */
+    // 傷患評估彈跳視窗載入
     function openPatientInfoModal(id) {
       const p = patientsDB[id] || { id: id, name: '', age: '', gender: '', phone: '', features: '', notes: '' };
 
@@ -1526,6 +1393,40 @@
 
     function closePatientInfoModal() {
       document.getElementById('modal-patient-info').classList.add('hidden');
+    }
+
+    // 電腦版手動增刪單筆傷病患
+    function addNewSinglePatientPrompt() {
+      const newId = prompt("請輸入要新增的傷卡編號 (例如 H263651)：");
+      if (!newId) return;
+      const cleanId = newId.trim().toUpperCase();
+      if (patientsDB[cleanId]) {
+        alert("此編號已存在！");
+        openPatientForm(cleanId);
+        return;
+      }
+      patientsDB[cleanId] = {
+        id: cleanId,
+        level: 'red',
+        name: '',
+        age: 0,
+        gender: '男',
+        vehicle: '巴陵91',
+        hospital: '國軍桃園總醫院',
+        arrived: false,
+        time: new Date().toLocaleTimeString('zh-TW', { hour12: false }),
+        features: '',
+        notes: ''
+      };
+      broadcastData();
+      openPatientForm(cleanId);
+    }
+
+    function deleteSinglePatient(id) {
+      if (confirm(`確定要刪除傷病患 [${id}] 的記錄嗎？`)) {
+        delete patientsDB[id];
+        broadcastData();
+      }
     }
 
     /* ------------------------- 手機檢傷端邏輯 ------------------------- */
@@ -1602,7 +1503,6 @@
         document.getElementById('detail-city').value = p.city || '桃園市';
         isArrived = Boolean(p.arrived);
 
-        // 車輛
         const vehSelect = document.getElementById('detail-vehicle');
         const vehOther = document.getElementById('detail-vehicle-other');
         const standardVehicles = ['復興91','復興92','大溪91','大溪92','圳頂91','圳頂92','八德91','八德92','龍潭91','龍潭92','高平91','高平92','巴陵91','巴陵92'];
@@ -1617,7 +1517,6 @@
           vehOther.value = '';
         }
 
-        // 醫院
         const hospSelect = document.getElementById('detail-hospital');
         const hospOther = document.getElementById('detail-hospital-other');
         const existsInMaster = HOSPITALS_MASTER.some(h => h.name === p.hospital);
@@ -1674,7 +1573,6 @@
         b.className = "w-10 h-10 rounded-md border-2 bg-white flex items-center justify-center transition";
       });
 
-      // 依圖復刻：未選取為白底彩色外框，選取時實心變色
       if (currentLevel === 'red') {
         redBtn.className = "w-10 h-10 rounded-md bg-[#ff3b50] text-white flex items-center justify-center shadow";
         redBtn.innerHTML = '<span class="text-white font-black text-base">I</span>';
@@ -2046,7 +1944,7 @@
             檢傷沿線撕下
           </div>
           <div class="flex items-center space-x-1 pl-1">
-            <div id="qr-back-bot-${id}" class="bg-white p-0.5 border border-slate-300"></div>
+            <div id="qr-front-bot-${id}" class="bg-white p-0.5 border border-slate-300"></div>
             <div class="serial-vertical text-[12px] font-bold text-slate-900 leading-none">${id}</div>
           </div>
           <div class="flex-1 text-center font-bold text-[17px] text-slate-900 tracking-widest">
