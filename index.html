@@ -305,7 +305,7 @@
           </button>
         </div>
 
-        <!-- [畫面 1-3] 檢傷分類卡 (1:1 復刻，車輛預設「請選擇」) -->
+        <!-- [畫面 1-3] 檢傷分類卡 -->
         <div id="mobile-view-detail" class="flex-1 flex flex-col hidden bg-[#f8f9fa]">
           <div class="bg-[#38383a] text-white px-3 py-3 flex items-center justify-between shadow-sm">
             <button onclick="showMobileView('list')" class="p-1 hover:opacity-80">
@@ -325,7 +325,7 @@
                   <div class="flex items-center space-x-2">
                     <span class="w-20 font-bold text-black flex-shrink-0">檢傷編碼</span>
                     <div id="detail-card-id" class="bg-[#dcdcdc] text-black font-serif italic font-bold text-[18px] px-3 py-0.5 rounded-sm tracking-wider flex-1 truncate">
-                      H00T519
+                      SM00T519
                     </div>
                   </div>
 
@@ -400,7 +400,7 @@
                   <span class="font-bold text-black">患者特徵</span>
                   <button type="button" class="text-blue-500 hover:opacity-80">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                      <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                      <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
                     </svg>
                   </button>
                 </div>
@@ -439,11 +439,13 @@
                 </div>
               </div>
 
+              <!-- 車輛縣市：預設「請選擇」 -->
               <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-2">
                   <span class="font-bold text-black flex-shrink-0">車輛縣市</span>
                   <select id="detail-city" class="border border-slate-300 rounded-sm px-2.5 py-1 bg-white text-blue-600 font-bold text-[14px] focus:outline-none">
-                    <option value="桃園市" selected>桃園市 ▾</option>
+                    <option value="" selected>請選擇 ▾</option>
+                    <option value="桃園市">桃園市 ▾</option>
                     <option value="其他縣市">其他縣市 ▾</option>
                   </select>
                 </div>
@@ -456,7 +458,7 @@
               <!-- 後送車輛：預設「請選擇」 -->
               <div class="flex items-center space-x-2">
                 <span class="font-bold text-black flex-shrink-0">後送車輛</span>
-                <select id="detail-vehicle" onchange="handleVehicleChange(this)" class="border border-slate-300 rounded-sm px-2 py-1 bg-white text-blue-600 font-bold text-[14px] focus:outline-none flex-1 min-w-0">
+                <select id="detail-vehicle" onchange="handleVehicleChange(this)" class="border border-slate-300 rounded-sm px-2.5 py-1 bg-white text-blue-600 font-bold text-[14px] focus:outline-none flex-1 min-w-0">
                   <option value="" selected>請選擇 ▾</option>
                   <option value="復興91">復興91</option>
                   <option value="復興92">復興92</option>
@@ -475,14 +477,14 @@
                   <option value="其他">其他 ▾</option>
                 </select>
                 <span class="text-slate-600 text-xs flex-shrink-0">其他</span>
-                <input type="text" id="detail-vehicle-other" placeholder="呼號/車牌名" class="flex-1 min-w-0 border border-slate-300 rounded-sm px-2 py-1 bg-white text-[14px] placeholder-slate-400 focus:outline-none">
+                <input type="text" id="detail-vehicle-other" placeholder="呼號/車牌名" class="flex-1 min-w-0 border border-slate-300 rounded-sm px-2.5 py-1 bg-white text-[14px] placeholder-slate-400 focus:outline-none">
               </div>
 
               <!-- 後送醫院 -->
               <div class="space-y-1">
                 <div class="flex items-center space-x-2">
                   <span class="font-bold text-black w-20 flex-shrink-0">後送醫院</span>
-                  <select id="detail-hospital" onchange="handleHospitalChange(this)" class="border border-slate-300 rounded-sm px-2 py-1.5 flex-1 min-w-0 bg-white text-blue-700 font-bold text-[14px] focus:outline-none truncate">
+                  <select id="detail-hospital" onchange="handleHospitalChange(this)" class="border border-slate-300 rounded-sm px-2.5 py-1.5 flex-1 min-w-0 bg-white text-blue-700 font-bold text-[14px] focus:outline-none truncate">
                     <!-- 動態注入 -->
                   </select>
                 </div>
@@ -521,11 +523,11 @@
           </div>
         </div>
 
-        <!-- 傷卡序號挑選彈跳視窗 -->
+        <!-- 傷卡序號挑選彈跳視窗 (SM263601~SM263650) -->
         <div id="modal-card-picker" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden">
           <div class="bg-white rounded-2xl p-4 w-full max-w-sm max-h-[85vh] flex flex-col shadow-2xl">
             <div class="flex justify-between items-center border-b pb-2">
-              <h3 class="font-black base text-slate-800">選擇傷卡序號 (H263601~H263650)</h3>
+              <h3 class="font-black base text-slate-800">選擇傷卡序號 (SM263601~SM263650)</h3>
               <button onclick="closeCardPickerModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
             <div class="text-xs text-slate-500 py-1">
@@ -545,12 +547,11 @@
     </section>
 
     <!-- ========================================================================= -->
-    <!-- 分頁面二：傷卡生成列印 (支援 A4 / A3 自由切換設定) -->
+    <!-- 分頁面二：傷卡生成列印 (支援 A4 / A3 自由切換) -->
     <!-- ========================================================================= -->
     <section id="tab-print" class="tab-content flex-1 flex-col items-center p-3 sm:p-4 hidden">
       <div class="no-print bg-white p-4 rounded-xl shadow-md border border-slate-200 max-w-3xl w-full mb-4 flex flex-wrap items-center justify-between gap-4">
         <div class="flex flex-wrap items-center gap-4">
-          <!-- 紙張規格選擇 -->
           <div>
             <label class="text-xs font-bold text-slate-700 block mb-1">紙張規格：</label>
             <select id="print-paper-select" onchange="renderPrintCards()" class="border border-slate-300 rounded px-3 py-1.5 text-xs font-bold bg-white">
@@ -560,7 +561,6 @@
             </select>
           </div>
 
-          <!-- 傷卡張數 -->
           <div>
             <label class="text-xs font-bold text-slate-700 block mb-1">傷卡張數：</label>
             <select id="print-count-select" onchange="renderPrintCards()" class="border border-slate-300 rounded px-3 py-1.5 text-xs font-bold bg-white">
@@ -583,10 +583,7 @@
         </button>
       </div>
 
-      <!-- 動態設定指引框 -->
-      <div id="print-guide-box" class="no-print bg-amber-50 border-l-4 border-amber-500 p-3 max-w-3xl w-full text-xs text-amber-900 rounded mb-6 space-y-1">
-        <!-- 動態由 JavaScript 依紙張載入 -->
-      </div>
+      <div id="print-guide-box" class="no-print bg-amber-50 border-l-4 border-amber-500 p-3 max-w-3xl w-full text-xs text-amber-900 rounded mb-6 space-y-1"></div>
 
       <div id="print-sheets-container" class="space-y-8 print:space-y-0"></div>
     </section>
@@ -607,7 +604,7 @@
         </div>
 
         <div class="flex flex-wrap items-center space-x-2 sm:space-x-3 text-sm sm:text-base lg:text-lg">
-          <span class="text-slate-700 font-bold mr-2 hidden sm:inline" id="cmd-top-clock">最後更新: 下午 21:30:24</span>
+          <span class="text-slate-700 font-bold mr-2 hidden sm:inline text-lg" id="cmd-top-clock">最後更新: 下午 21:30:24</span>
           <button id="btn-cmd-top-stations" onclick="switchCommanderSubView('view1')" class="bg-[#59a8cb] hover:bg-[#4593b5] text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-[4px] font-bold text-sm sm:text-base transition">
             救護站列表
           </button>
@@ -750,7 +747,7 @@
             </div>
           </div>
 
-          <!-- 【圖二】傷病患清單 (每頁顯示 5/10/50 筆) -->
+          <!-- 【圖二】傷病患清單 -->
           <div id="cmd-sub-view2" class="cmd-view flex-1 flex flex-col space-y-4 hidden">
             <div class="flex flex-wrap items-center gap-1.5 sm:gap-2.5 border-b border-sky-300 pb-1.5">
               <button onclick="switchCommanderSubView('view2')" class="bg-[#c2e3f8] text-[#134d7d] border-t-2 border-x-2 border-[#549dbb] px-4 sm:px-6 py-2 rounded-t font-black text-xs sm:text-base lg:text-[22px]">
@@ -770,7 +767,7 @@
             <div class="flex flex-wrap justify-between items-center text-xs sm:text-base lg:text-[21px] gap-2.5 pt-1">
               <div class="flex items-center space-x-2">
                 <span>每頁顯示</span>
-                <!-- ★ 依指令支援 5 / 10 / 50 筆資料切換 -->
+                <!-- 支援 5 / 10 / 50 筆資料切換 -->
                 <select id="v2-pagesize-select" onchange="renderCommanderPatientsView2()" class="border border-slate-300 rounded px-2 py-1 bg-white font-medium text-xs sm:text-base lg:text-[20px]">
                   <option value="5" selected>5</option>
                   <option value="10">10</option>
@@ -840,7 +837,7 @@
             </div>
           </div>
 
-          <!-- 【圖三】後送醫院收治情形 (★ 只顯示有送醫中或已到院的醫院) -->
+          <!-- 【圖三】後送醫院收治情形 (只顯示有送醫中或已到院的醫院) -->
           <div id="cmd-sub-view3" class="cmd-view flex-1 flex flex-col space-y-4 hidden">
             <div class="flex flex-wrap items-center gap-1.5 sm:gap-2.5 border-b border-sky-300 pb-1.5">
               <button onclick="switchCommanderSubView('view2')" class="bg-[#7cb7d8] hover:bg-[#68a8cc] text-white px-4 sm:px-6 py-2 rounded-t font-bold text-xs sm:text-base lg:text-[22px] transition">
@@ -1028,22 +1025,23 @@
       { name: "長庚", level: "重度", cap: 40, dist: 35000 }
     ];
 
+    // 種子數據
     const DEFAULT_SEED_DATA = {
-      "H00T517": { id: "H00T517", level: "black", name: "陳帶", age: 0, gender: "男", vehicle: "", hospital: "", arrived: false, time: "10:14:42", phone: "", features: "", notes: "" },
-      "H00T511": { id: "H00T511", level: "red", name: "john", age: "", gender: "男", vehicle: "", hospital: "", arrived: false, time: "", phone: "", features: "", notes: "" },
-      "H00T512": { id: "H00T512", level: "red", name: "op", age: 0, gender: "男", vehicle: "", hospital: "長庚", arrived: false, time: "10:29:28", phone: "", features: "", notes: "" },
-      "H00T515": { id: "H00T515", level: "black", name: "李知", age: 0, gender: "男", vehicle: "", hospital: "", arrived: false, time: "10:15:37", phone: "", features: "", notes: "" },
-      "H00T814": { id: "H00T814", level: "red", name: "積積", age: 9, gender: "男", vehicle: "巴陵91", hospital: "國軍桃園總醫院", arrived: false, time: "10:20:11", phone: "", features: "很壯", notes: "會一直喊雞雞雞雞 意識清醒 不能行走" },
-      "H00T516": { id: "H00T516", level: "red", name: "不詳", age: 34, gender: "男", vehicle: "巴陵91", hospital: "國軍桃園總醫院", arrived: true, time: "10:05:12", phone: "", features: "", notes: "" },
-      "H00T518": { id: "H00T518", level: "red", name: "不詳", age: 45, gender: "男", vehicle: "大溪91", hospital: "聯新國際醫院", arrived: false, time: "10:18:20", phone: "", features: "", notes: "" },
-      "H00T519": { id: "H00T519", level: "red", name: "不詳", age: 22, gender: "女", vehicle: "大溪92", hospital: "衛生福利部桃園醫院", arrived: false, time: "10:22:05", phone: "", features: "", notes: "" },
-      "H00T520": { id: "H00T520", level: "red", name: "不詳", age: 50, gender: "男", vehicle: "圳頂91", hospital: "敏盛綜合醫院", arrived: false, time: "10:25:40", phone: "", features: "", notes: "" },
-      "H00T521": { id: "H00T521", level: "yellow", name: "不詳", age: 19, gender: "女", vehicle: "八德91", hospital: "聖保祿醫院", arrived: false, time: "10:12:15", phone: "", features: "", notes: "" },
-      "H00T522": { id: "H00T522", level: "yellow", name: "不詳", age: 60, gender: "男", vehicle: "龍潭91", hospital: "天成醫院", arrived: false, time: "10:16:30", phone: "", features: "", notes: "" },
-      "H00T523": { id: "H00T523", level: "yellow", name: "不詳", age: 38, gender: "女", vehicle: "高平91", hospital: "國軍桃園總醫院", arrived: false, time: "10:27:50", phone: "", features: "", notes: "" },
-      "H00T524": { id: "H00T524", level: "green", name: "不詳", age: 25, gender: "男", vehicle: "巴陵92", hospital: "聯新國際醫院", arrived: false, time: "10:19:00", phone: "", features: "", notes: "" },
-      "H00T525": { id: "H00T525", level: "green", name: "不詳", age: 31, gender: "女", vehicle: "復興92", hospital: "衛生福利部桃園醫院", arrived: false, time: "10:28:10", phone: "", features: "", notes: "" },
-      "H00T526": { id: "H00T526", level: "black", name: "不詳", age: 72, gender: "男", vehicle: "", hospital: "", arrived: false, time: "", phone: "", features: "", notes: "" }
+      "SM00T517": { id: "SM00T517", level: "black", name: "陳帶", age: 0, gender: "男", vehicle: "", hospital: "", arrived: false, time: "10:14:42", departTime: "", phone: "", features: "", notes: "" },
+      "SM00T511": { id: "SM00T511", level: "red", name: "john", age: "", gender: "男", vehicle: "", hospital: "", arrived: false, time: "", departTime: "", phone: "", features: "", notes: "" },
+      "SM00T512": { id: "SM00T512", level: "red", name: "op", age: 0, gender: "男", vehicle: "", hospital: "長庚", arrived: false, time: "10:29:28", departTime: "", phone: "", features: "", notes: "" },
+      "SM00T515": { id: "SM00T515", level: "black", name: "李知", age: 0, gender: "男", vehicle: "", hospital: "", arrived: false, time: "10:15:37", departTime: "", phone: "", features: "", notes: "" },
+      "SM00T814": { id: "SM00T814", level: "red", name: "積積", age: 9, gender: "男", vehicle: "巴陵91", hospital: "國軍桃園總醫院", arrived: false, time: "10:20:11", departTime: "10:20:11", phone: "", features: "很壯", notes: "會一直喊雞雞雞雞 意識清醒 不能行走" },
+      "SM00T516": { id: "SM00T516", level: "red", name: "不詳", age: 34, gender: "男", vehicle: "巴陵91", hospital: "國軍桃園總醫院", arrived: true, time: "10:05:12", departTime: "10:05:12", phone: "", features: "", notes: "" },
+      "SM00T518": { id: "SM00T518", level: "red", name: "不詳", age: 45, gender: "男", vehicle: "大溪91", hospital: "聯新國際醫院", arrived: false, time: "10:18:20", departTime: "10:18:20", phone: "", features: "", notes: "" },
+      "SM00T519": { id: "SM00T519", level: "red", name: "不詳", age: 22, gender: "女", vehicle: "大溪92", hospital: "衛生福利部桃園醫院", arrived: false, time: "10:22:05", departTime: "10:22:05", phone: "", features: "", notes: "" },
+      "SM00T520": { id: "SM00T520", level: "red", name: "不詳", age: 50, gender: "男", vehicle: "圳頂91", hospital: "敏盛綜合醫院", arrived: false, time: "10:25:40", departTime: "10:25:40", phone: "", features: "", notes: "" },
+      "SM00T521": { id: "SM00T521", level: "yellow", name: "不詳", age: 19, gender: "女", vehicle: "八德91", hospital: "聖保祿醫院", arrived: false, time: "10:12:15", departTime: "10:12:15", phone: "", features: "", notes: "" },
+      "SM00T522": { id: "SM00T522", level: "yellow", name: "不詳", age: 60, gender: "男", vehicle: "龍潭91", hospital: "天成醫院", arrived: false, time: "10:16:30", departTime: "10:16:30", phone: "", features: "", notes: "" },
+      "SM00T523": { id: "SM00T523", level: "yellow", name: "不詳", age: 38, gender: "女", vehicle: "高平91", hospital: "國軍桃園總醫院", arrived: false, time: "10:27:50", departTime: "10:27:50", phone: "", features: "", notes: "" },
+      "SM00T524": { id: "SM00T524", level: "green", name: "不詳", age: 25, gender: "男", vehicle: "巴陵92", hospital: "聯新國際醫院", arrived: false, time: "10:19:00", departTime: "10:19:00", phone: "", features: "", notes: "" },
+      "SM00T525": { id: "SM00T525", level: "green", name: "不詳", age: 31, gender: "女", vehicle: "復興92", hospital: "衛生福利部桃園醫院", arrived: false, time: "10:28:10", departTime: "10:28:10", phone: "", features: "", notes: "" },
+      "SM00T526": { id: "SM00T526", level: "black", name: "不詳", age: 72, gender: "男", vehicle: "", hospital: "", arrived: false, time: "", departTime: "", phone: "", features: "", notes: "" }
     };
 
     let patientsDB = {};
@@ -1235,7 +1233,6 @@
       const inTransit = list.filter(p => !p.arrived && (p.vehicle || (p.hospital && p.status === '送醫中'))).length;
       const onsite = total - arrived - inTransit;
       
-      // 正確計算指派車輛數，未派車時為 0
       const validVehicles = list.filter(p => p.vehicle && p.vehicle.trim() !== '' && p.vehicle !== '其他').map(p => p.vehicle.trim());
       const vehicleCount = new Set(validVehicles).size;
 
@@ -1270,7 +1267,6 @@
       document.getElementById('sb-count-onsite').innerText = onsite;
       document.getElementById('sb-pct-onsite').innerText = `${onSiteRatioPct}%`;
       
-      // ★ 修正：真實車輛數計算，清空時為 0 臺
       document.getElementById('sb-count-vehicles').innerText = vehicleCount;
 
       const stackTotalHtml = buildStackedColorCellHtml(black, red, yellow, green);
@@ -1345,7 +1341,7 @@
       });
     }
 
-    // 渲染【圖二】傷病患清單 (每頁顯示 5/10/50 筆)
+    // 渲染【圖二】傷病患清單
     function renderCommanderPatientsView2() {
       const tbody = document.getElementById('v2-patients-tbody');
       const search = (document.getElementById('v2-search-input')?.value || '').toLowerCase();
@@ -1397,25 +1393,22 @@
           <td class="font-bold text-slate-800">${st}</td>
           <td class="font-semibold text-slate-700">${p.vehicle || '-'}</td>
           <td class="font-bold text-slate-900">${p.hospital || '-'}</td>
-          <td class="font-mono text-xs sm:text-sm lg:text-[20px] leading-tight">${p.time ? `2026/09/28<br>${p.time}` : '-'}</td>
+          <td class="font-mono text-xs sm:text-sm lg:text-[20px] leading-tight">${p.departTime ? `2026/09/28<br>${p.departTime}` : '-'}</td>
           <td class="font-mono text-xs sm:text-sm lg:text-[20px] leading-tight">${p.arrived ? `2026/09/28<br>10:35:10` : '-'}</td>
           <td class="text-slate-400 font-bold">-</td>
-          <!-- ★ 特徵照片點擊顯示「未開放」彈窗 -->
           <td><button onclick="openPhotoNoticeModal()" class="bg-[#1e88e5] text-white px-2.5 sm:px-3.5 py-1 rounded text-xs sm:text-sm lg:text-lg font-bold hover:bg-blue-700 shadow-sm transition">檢視</button></td>
-          <!-- 傷患資訊點擊顯示傷患評估資料 -->
           <td><button onclick="openPatientInfoModal('${p.id}')" class="bg-[#1e88e5] text-white px-2.5 sm:px-3.5 py-1 rounded text-xs sm:text-sm lg:text-lg font-bold hover:bg-blue-700 shadow-sm transition">檢視</button></td>
         `;
         tbody.appendChild(tr);
       });
     }
 
-    // 渲染【圖三】後送醫院收治情形 (★ 只顯示有送醫中或已到院的醫院)
+    // 渲染【圖三】後送醫院收治情形
     function renderCommanderHospitalsView3() {
       const tbody = document.getElementById('v3-hospitals-tbody');
       const search = (document.getElementById('v3-search-input')?.value || '').toLowerCase();
       const list = Object.values(patientsDB);
 
-      // 只保留有送醫中或已到院人數大於 0 的醫院
       let activeHospList = HOSPITALS_MASTER.filter(hosp => {
         const hospPatients = list.filter(p => p.hospital && p.hospital.trim() === hosp.name.trim());
         const activeCount = hospPatients.filter(p => (p.vehicle || p.hospital || p.arrived)).length;
@@ -1471,7 +1464,6 @@
       });
     }
 
-    // 傷患評估彈跳視窗載入
     function openPatientInfoModal(id) {
       const p = patientsDB[id] || { id: id, name: '', age: '', gender: '', phone: '', features: '', notes: '' };
 
@@ -1491,7 +1483,6 @@
       document.getElementById('modal-patient-info').classList.add('hidden');
     }
 
-    // ★ 特徵照片「未開放」專屬彈跳視窗
     function openPhotoNoticeModal() {
       document.getElementById('modal-photo-notice').classList.remove('hidden');
     }
@@ -1500,9 +1491,8 @@
       document.getElementById('modal-photo-notice').classList.add('hidden');
     }
 
-    // 電腦版快速增刪傷病患
     function addNewSinglePatientPrompt() {
-      const newId = prompt("請輸入要新增的傷卡編號 (例如 H263651)：");
+      const newId = prompt("請輸入要新增的傷卡編號 (例如 SM263651)：");
       if (!newId) return;
       const cleanId = newId.trim().toUpperCase();
       if (patientsDB[cleanId]) {
@@ -1520,6 +1510,7 @@
         hospital: '',
         arrived: false,
         time: new Date().toLocaleTimeString('zh-TW', { hour12: false }),
+        departTime: '',
         features: '',
         notes: ''
       };
@@ -1561,7 +1552,7 @@
       const baseNum = 263601;
 
       for (let i = 0; i < 50; i++) {
-        const id = `H${baseNum + i}`;
+        const id = `SM${baseNum + i}`;
         if (filter && !id.toLowerCase().includes(filter.toLowerCase())) continue;
 
         const p = patientsDB[id];
@@ -1605,7 +1596,7 @@
         document.getElementById('detail-features').value = p.features || '';
         document.getElementById('detail-notes').value = p.notes || '';
         document.getElementById('detail-station').value = p.station || '第一救護站';
-        document.getElementById('detail-city').value = p.city || '桃園市';
+        document.getElementById('detail-city').value = p.city || '';
         isArrived = Boolean(p.arrived);
 
         const vehSelect = document.getElementById('detail-vehicle');
@@ -1618,7 +1609,6 @@
           vehSelect.value = '其他';
           vehOther.value = p.vehicle;
         } else {
-          // ★ 修正：預設請選擇
           vehSelect.value = '';
           vehOther.value = '';
         }
@@ -1649,9 +1639,8 @@
         document.getElementById('detail-features').value = '';
         document.getElementById('detail-notes').value = '';
         document.getElementById('detail-station').value = '第一救護站';
-        document.getElementById('detail-city').value = '桃園市';
+        document.getElementById('detail-city').value = '';
         isArrived = false;
-        // ★ 修正：新建傷卡時車輛預設「請選擇」
         document.getElementById('detail-vehicle').value = '';
         document.getElementById('detail-vehicle-other').value = '';
         document.getElementById('detail-hospital').value = '';
@@ -1748,6 +1737,17 @@
       const selectedGender = Array.from(document.getElementsByName('gender')).find(r => r.checked)?.value || '男';
       const nowTimeStr = new Date().toLocaleTimeString('zh-TW', { hour12: false });
 
+      // 判斷是否已選擇完後送車輛+後送醫院
+      const hasBothVehicleAndHospital = Boolean(vehicle && vehicle.trim() !== '' && hospital && hospital.trim() !== '');
+      const prevPatient = patientsDB[currentEditId];
+      let departTime = '';
+
+      if (hasBothVehicleAndHospital) {
+        departTime = (prevPatient && prevPatient.departTime) ? prevPatient.departTime : nowTimeStr;
+      } else {
+        departTime = '';
+      }
+
       patientsDB[currentEditId] = {
         id: currentEditId,
         level: currentLevel,
@@ -1763,7 +1763,8 @@
         hospital: hospital,
         arrived: isArrived,
         temsis: document.getElementById('detail-temsis').value.trim(),
-        time: nowTimeStr
+        time: nowTimeStr,
+        departTime: departTime
       };
 
       document.getElementById('detail-last-update').innerText = `2026/09/28 ${nowTimeStr}`;
@@ -1773,12 +1774,13 @@
     }
 
     /* -------------------------------------------------------------------------
-       ★ A3 / A4 自由切換雙面列印生成器
+       ★ A3 / A4 雙面列印生成器 (精確綁定 SM 序號，徹底修復條碼與二維碼)
        ------------------------------------------------------------------------- */
     function renderPrintCards() {
       const container = document.getElementById('print-sheets-container');
       const pageStyleEl = document.getElementById('dynamic-print-page-style');
       const guideBox = document.getElementById('print-guide-box');
+      if (!container) return;
       container.innerHTML = '';
 
       const paperType = document.getElementById('print-paper-select')?.value || 'A3';
@@ -1834,12 +1836,17 @@
       }
 
       const totalSheets = Math.ceil(totalCount / cardsPerSheet);
+      const renderedCardIds = [];
 
       for (let s = 0; s < totalSheets; s++) {
         const sheetIds = [];
         for (let c = 0; c < cardsPerSheet; c++) {
           const idx = s * cardsPerSheet + c;
-          if (idx < totalCount) sheetIds.push(`H${baseNum + idx}`);
+          if (idx < totalCount) {
+            const id = `SM${baseNum + idx}`;
+            sheetIds.push(id);
+            renderedCardIds.push(id);
+          }
         }
 
         // 正面頁面
@@ -1858,7 +1865,7 @@
         frontPage.appendChild(frontRow);
         container.appendChild(frontPage);
 
-        // 背面頁面 (倒序鏡像對齊)
+        // 背面頁面 (倒序鏡像排列)
         const backPage = document.createElement('div');
         backPage.className = `a3-page bg-white shadow-xl mx-auto flex items-start justify-center relative ${printScaleClass}`;
         backPage.style.width = sheetWidth;
@@ -1875,10 +1882,9 @@
         container.appendChild(backPage);
       }
 
+      // ★ 精確針對實際渲染的卡片 ID 生成條碼與二維碼
       setTimeout(() => {
-        const count = parseInt(document.getElementById('print-count-select')?.value) || 10;
-        for (let i = 0; i < count; i++) {
-          const id = `H${263601 + i}`;
+        renderedCardIds.forEach(id => {
           const fBar = document.getElementById(`barcode-front-${id}`);
           if (fBar) JsBarcode(fBar, id, { format: "CODE128", width: 1.45, height: 30, displayValue: true, fontSize: 12, margin: 0 });
 
@@ -1896,8 +1902,8 @@
 
           const bBotQr = document.getElementById(`qr-back-bot-${id}`);
           if (bBotQr && bBotQr.children.length === 0) new QRCode(bBotQr, { text: id, width: 46, height: 46, correctLevel: QRCode.CorrectLevel.M });
-        }
-      }, 50);
+        });
+      }, 60);
     }
 
     function createFrontCardElement(id) {
@@ -1970,6 +1976,7 @@
           </div>
         </div>
 
+        <!-- 綠色撕條 (III) -->
         <div class="bg-[#4cb069] text-white flex items-center relative" style="height: 20mm;">
           <div class="flex items-center space-x-1.5 absolute left-[10mm]">
             <div class="w-[2.2mm] h-[8.5mm] bg-white rounded-sm"></div>
@@ -2095,6 +2102,7 @@
           </div>
         </div>
 
+        <!-- 綠色撕條 (III) -->
         <div class="bg-[#4cb069] text-white flex items-center relative" style="height: 20mm;">
           <div class="flex items-center space-x-1.5 absolute left-[10mm]">
             <div class="w-[2.2mm] h-[8.5mm] bg-white rounded-sm"></div>
