@@ -13,17 +13,17 @@
   <!-- 免註冊公共雲端即時同步 MQTT.js CDN -->
   <script src="https://unpkg.com/mqtt@4.3.7/dist/mqtt.min.js"></script>
 
-  <style>
-    /* =========================================================================
-       A3 雙面列印設定：4 頁 A3 輸出，正反面零偏差對齊
-       ========================================================================= */
+  <!-- 動態紙張列印樣式 -->
+  <style id="dynamic-print-page-style">
     @page {
       size: A3 landscape;
       margin: 0mm !important;
     }
+  </style>
+
+  <style>
     @media print {
       html, body {
-        width: 420mm !important;
         height: auto !important;
         min-height: 100% !important;
         margin: 0 !important;
@@ -35,19 +35,15 @@
       .no-print {
         display: none !important;
       }
-      #tab-mobile, #tab-commander, #modal-patient-info, #modal-card-picker {
+      #tab-mobile, #tab-commander, #modal-patient-info, #modal-card-picker, #modal-photo-notice {
         display: none !important;
       }
       #tab-print, #print-sheets-container {
         display: block !important;
         padding: 0 !important;
         margin: 0 !important;
-        width: 420mm !important;
       }
       .a3-page {
-        width: 420mm !important;
-        height: 225mm !important;
-        max-height: 225mm !important;
         page-break-after: always !important;
         break-after: page !important;
         page-break-inside: avoid !important;
@@ -158,83 +154,144 @@
       <div class="w-full max-w-md bg-white border border-slate-300 rounded-2xl shadow-xl flex flex-col min-h-[690px] overflow-hidden relative">
 
         <div id="mobile-view-cases" class="flex-1 flex flex-col">
-          <div class="bg-[#38383a] text-white px-4 py-3 flex items-center justify-between">
+          <div class="bg-[#38383a] text-white px-4 py-3 flex items-center justify-between shadow-sm">
             <h2 class="text-[21px] font-bold tracking-wide">案件列表</h2>
-            <span class="text-xs bg-slate-700 px-2 py-0.5 rounded text-slate-300">巴陵分隊演習</span>
-          </div>
-          <div class="p-3.5 bg-slate-50 border-b text-[14px] space-y-2.5">
-            <div class="flex items-center space-x-2">
-              <span class="font-semibold text-slate-600">開案時間</span>
-              <input type="text" readonly value="2026/09/28" class="border rounded p-1 flex-1 bg-white text-center">
-              <span>~</span>
-              <input type="text" readonly value="2026/09/28" class="border rounded p-1 flex-1 bg-white text-center">
-            </div>
-            <div class="flex items-center space-x-2">
-              <span class="font-semibold text-slate-600">案發縣市</span>
-              <select class="border rounded p-1 flex-1 bg-white">
-                <option>桃園市</option>
-              </select>
-              <button class="bg-orange-500 text-white px-4 py-1 rounded font-bold">查詢</button>
+            <div class="flex items-center space-x-1 cursor-pointer hover:opacity-80">
+              <span class="text-[16px] font-medium">登出</span>
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
             </div>
           </div>
-          <div class="flex-1 divide-y divide-slate-200">
-            <div onclick="showMobileView('list')" class="p-3.5 hover:bg-blue-50 cursor-pointer transition flex flex-col space-y-1">
-              <div class="flex justify-between items-center text-[13px] text-slate-500">
-                <span>09/28 08:58:46</span>
-                <span class="bg-green-100 text-green-700 px-1.5 py-0.5 rounded font-mono text-[11px]">03260928085801</span>
+
+          <div class="p-3.5 bg-slate-50 border-b border-slate-200 text-[15px] space-y-2.5">
+            <div class="text-[17px] font-bold text-slate-800">開案時間</div>
+            <div class="flex items-center space-x-2">
+              <span class="font-bold text-slate-700 w-14 flex-shrink-0">日 期</span>
+              <div class="relative flex-1 min-w-0">
+                <input type="text" readonly value="2026/09/28" class="w-full border border-slate-300 rounded px-2 py-1.5 bg-white text-center text-[15px]">
               </div>
-              <div class="font-bold text-slate-900 text-[16px]">巴陵分隊大傷測試案件</div>
-              <div class="text-[13px] text-slate-500">點擊進入檢傷列表 ➔</div>
+              <span class="flex-shrink-0">~</span>
+              <div class="relative flex-1 min-w-0">
+                <input type="text" readonly value="2026/09/28" class="w-full border border-slate-300 rounded px-2 py-1.5 bg-white text-center text-[15px]">
+              </div>
+            </div>
+
+            <div class="flex items-center space-x-2 pt-1">
+              <span class="font-bold text-slate-700 w-16 flex-shrink-0">案發縣市</span>
+              <select class="border border-slate-300 rounded px-2 py-1.5 flex-1 min-w-0 bg-white text-[15px] text-blue-600 font-bold">
+                <option>請選擇 ▾</option>
+                <option selected>桃園市 ▾</option>
+              </select>
+              <button class="bg-[#ff7043] hover:bg-[#f4511e] text-white px-4 sm:px-5 py-1.5 rounded-full font-bold text-[15px] flex items-center space-x-1 shadow transition flex-shrink-0">
+                <span>🔍 查詢</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-12 bg-[#707072] text-white text-[15px] font-bold py-2.5 px-3 text-center">
+            <div class="col-span-3">開案時間</div>
+            <div class="col-span-4">大傷案號</div>
+            <div class="col-span-5">大傷名稱</div>
+          </div>
+
+          <div class="flex-1 divide-y divide-slate-200 overflow-y-auto">
+            <div onclick="showMobileView('list')" class="grid grid-cols-12 py-3 px-3 items-center text-[15px] hover:bg-sky-50 cursor-pointer bg-white transition">
+              <div class="col-span-3 text-slate-800 font-mono text-center text-[14px] leading-tight">
+                2026/<br>10/03<br>10:49
+              </div>
+              <div class="col-span-4 font-mono font-bold text-slate-800 text-center text-[14px]">
+                03261003104901
+              </div>
+              <div class="col-span-5 text-left pl-2">
+                <span class="text-blue-700 font-bold underline text-[16px]">巴陵分隊練習案件</span>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-12 py-3 px-3 items-center text-[15px] bg-[#fdfbf6] text-slate-600">
+              <div class="col-span-3 font-mono text-center text-[14px] leading-tight">2026/<br>10/03<br>04:11</div>
+              <div class="col-span-4 font-mono font-bold text-center text-[14px]">03261003042401</div>
+              <div class="col-span-5 text-left pl-2 text-slate-700 truncate">桃園市桃園區-第一大隊測試案件</div>
+            </div>
+
+            <div class="grid grid-cols-12 py-3 px-3 items-center text-[15px] bg-white text-slate-600">
+              <div class="col-span-3 font-mono text-center text-[14px] leading-tight">2026/<br>10/02<br>20:15</div>
+              <div class="col-span-4 font-mono font-bold text-center text-[14px]">03261002201501</div>
+              <div class="col-span-5 text-left pl-2 text-slate-700 truncate">中路分隊[大傷測試案件]</div>
+            </div>
+
+            <div class="grid grid-cols-12 py-3 px-3 items-center text-[15px] bg-[#fdfbf6] text-slate-600">
+              <div class="col-span-3 font-mono text-center text-[14px] leading-tight">2026/<br>10/02<br>20:05</div>
+              <div class="col-span-4 font-mono font-bold text-center text-[14px]">03261002200501</div>
+              <div class="col-span-5 text-left pl-2 text-slate-700 truncate">大園分隊[大傷測試案件]</div>
             </div>
           </div>
         </div>
 
+        <!-- [畫面 1-2] 檢傷列表 -->
         <div id="mobile-view-list" class="flex-1 flex flex-col hidden">
-          <div class="bg-[#38383a] text-white px-3 py-3 flex items-center justify-between">
-            <button onclick="showMobileView('cases')" class="text-xs font-bold text-slate-300 hover:text-white">❮ 案件列表</button>
-            <h2 class="text-[21px] font-bold">檢傷列表</h2>
-            <div class="w-12"></div>
+          <div class="bg-[#38383a] text-white px-3 py-3 flex items-center justify-between shadow-sm">
+            <button onclick="showMobileView('cases')" class="p-1 hover:opacity-80">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <h2 class="text-[21px] font-bold tracking-wide flex-1 text-center pr-6">檢傷列表</h2>
           </div>
 
-          <div class="p-2.5 bg-slate-50 border-b text-[12px] space-y-0.5">
-            <div class="text-slate-700 font-bold">開案時間：<span class="font-semibold text-slate-900">2026/09/28 08:58:46</span></div>
-            <div class="text-slate-700 font-bold">大傷名稱：<span class="font-bold text-slate-900">巴陵分隊大傷測試案件</span></div>
+          <div class="p-3 bg-white border-b border-slate-200 text-[15px] space-y-1">
+            <div class="text-slate-700 font-bold">開案時間 : <span class="font-mono font-bold text-slate-900">2026/10/03 10:49:04</span></div>
+            <div class="text-slate-700 font-bold">大傷名稱 : <span class="font-bold text-slate-900">巴陵分隊練習案件</span></div>
           </div>
 
-          <div class="bg-white p-2.5 border-b">
-            <div class="grid grid-cols-5 gap-1 text-center text-[13px]">
-              <div class="bg-slate-100 rounded p-1 font-bold text-slate-700 border">全部<br><span id="m-count-total" class="text-base font-black">0</span></div>
-              <div class="bg-slate-900 text-white rounded p-1 font-bold">黑<br><span id="m-count-black" class="text-base font-black">0</span></div>
-              <div class="bg-rose-500 text-white rounded p-1 font-bold">紅<br><span id="m-count-red" class="text-base font-black">0</span></div>
-              <div class="bg-amber-400 text-slate-900 rounded p-1 font-bold">黃<br><span id="m-count-yellow" class="text-base font-black">0</span></div>
-              <div class="bg-emerald-500 text-white rounded p-1 font-bold">綠<br><span id="m-count-green" class="text-base font-black">0</span></div>
+          <div class="bg-white p-3 border-b border-slate-200">
+            <div class="grid grid-cols-6 items-center text-center">
+              <div class="text-[14px] font-bold text-slate-700 flex flex-col items-center justify-center">
+                <span>傷票級別</span>
+                <span class="mt-2">傷票人數</span>
+              </div>
+              <div class="flex flex-col items-center">
+                <span class="bg-[#cfd4d8] text-slate-800 text-[13px] font-bold px-2 py-0.5 rounded">全部</span>
+                <span id="m-count-total" class="font-black text-[18px] mt-1.5">0</span>
+              </div>
+              <div class="flex flex-col items-center">
+                <span class="w-6 h-6 bg-[#333] rounded-[4px] inline-block shadow-sm"></span>
+                <span id="m-count-black" class="font-black text-[18px] mt-1.5">0</span>
+              </div>
+              <div class="flex flex-col items-center">
+                <span class="w-6 h-6 bg-[#ff3b50] rounded-[4px] inline-block shadow-sm"></span>
+                <span id="m-count-red" class="font-black text-[18px] mt-1.5">0</span>
+              </div>
+              <div class="flex flex-col items-center">
+                <span class="w-6 h-6 bg-[#ffcc00] rounded-[4px] inline-block shadow-sm"></span>
+                <span id="m-count-yellow" class="font-black text-[18px] mt-1.5">0</span>
+              </div>
+              <div class="flex flex-col items-center">
+                <span class="w-6 h-6 bg-[#34c759] rounded-[4px] inline-block shadow-sm"></span>
+                <span id="m-count-green" class="font-black text-[18px] mt-1.5">0</span>
+              </div>
             </div>
           </div>
 
-          <div class="p-2.5 flex justify-between items-center text-[13px] bg-[#eef1f4] border-b border-slate-200">
-            <select id="m-triage-station-select" class="border border-slate-300 rounded px-2.5 py-1 bg-white text-blue-600 font-bold text-[14px]">
+          <div class="p-2.5 flex justify-between items-center text-[15px] bg-[#eef1f4] border-b border-slate-200">
+            <select id="m-triage-station-select" class="border border-slate-300 rounded px-2.5 py-1.5 bg-white text-blue-600 font-bold text-[15px] focus:outline-none">
               <option value="第一檢傷站" selected>第一檢傷站 ▾</option>
               <option value="第二檢傷站">第二檢傷站 ▾</option>
             </select>
-            <button onclick="addNewSinglePatientPrompt()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded font-bold text-[13px] shadow-sm transition">
+            <button onclick="addNewSinglePatientPrompt()" class="hidden sm:inline-flex bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded font-bold text-[14px] shadow-sm transition">
               ＋ 新增傷患
             </button>
           </div>
 
-          <div class="grid grid-cols-12 bg-[#707072] text-white text-[14px] font-bold py-2 px-3 text-center">
+          <div class="grid grid-cols-12 bg-[#707072] text-white text-[15px] font-bold py-2 px-3 text-center">
             <div class="col-span-2">項次</div>
             <div class="col-span-4">患者姓名</div>
             <div class="col-span-3">檢傷編碼</div>
             <div class="col-span-3">檢傷資訊</div>
           </div>
 
-          <div id="mobile-patients-container" class="flex-1 overflow-y-auto divide-y divide-slate-100">
-            <div class="text-center py-16 text-slate-400 text-[13px] px-4">
-              目前尚無檢傷資料<br>請點選右下角 QR-Code 圖案新增傷病患
-            </div>
-          </div>
+          <div id="mobile-patients-container" class="flex-1 overflow-y-auto divide-y divide-slate-200"></div>
 
-          <!-- 右下角 QR-CODE 浮動按鈕 -->
           <button onclick="openCardPickerModal()" class="absolute bottom-6 right-6 w-16 h-16 bg-gradient-to-tr from-cyan-400 to-blue-500 rounded-2xl shadow-xl flex items-center justify-center p-2.5 hover:scale-105 active:scale-95 transition">
             <div class="w-full h-full border-2 border-white rounded-lg flex items-center justify-center relative">
               <svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -248,44 +305,44 @@
           </button>
         </div>
 
-        <!-- [畫面 1-3] 檢傷分類卡 -->
+        <!-- [畫面 1-3] 檢傷分類卡 (1:1 復刻，車輛預設「請選擇」) -->
         <div id="mobile-view-detail" class="flex-1 flex flex-col hidden bg-[#f8f9fa]">
-          <div class="bg-[#38383a] text-white px-3 py-3 flex items-center justify-between">
+          <div class="bg-[#38383a] text-white px-3 py-3 flex items-center justify-between shadow-sm">
             <button onclick="showMobileView('list')" class="p-1 hover:opacity-80">
               <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
               </svg>
             </button>
-            <h2 class="text-[21px] font-bold tracking-wider flex-1 text-center pr-6">檢傷分類卡</h2>
+            <h2 class="text-[21px] font-bold tracking-wide flex-1 text-center pr-6">檢傷分類卡</h2>
           </div>
 
-          <div class="flex-1 overflow-y-auto px-4 py-3.5 space-y-3.5 text-[14px] text-slate-800">
+          <div class="flex-1 overflow-y-auto px-4 py-3.5 space-y-3.5 text-[15px] text-slate-800">
             <div>
-              <div class="font-bold text-[16px] text-black mb-2.5">檢傷資訊</div>
+              <div class="font-bold text-[17px] text-black mb-2.5">檢傷資訊</div>
 
               <div class="flex items-start justify-between gap-2.5">
-                <div class="flex-1 space-y-3">
+                <div class="flex-1 min-w-0 space-y-3">
                   <div class="flex items-center space-x-2">
-                    <span class="w-20 font-bold text-black">檢傷編碼</span>
-                    <div id="detail-card-id" class="bg-[#dcdcdc] text-black font-serif italic font-bold text-[18px] px-3 py-0.5 rounded-sm tracking-wider">
+                    <span class="w-20 font-bold text-black flex-shrink-0">檢傷編碼</span>
+                    <div id="detail-card-id" class="bg-[#dcdcdc] text-black font-serif italic font-bold text-[18px] px-3 py-0.5 rounded-sm tracking-wider flex-1 truncate">
                       H00T519
                     </div>
                   </div>
 
                   <div class="flex items-center space-x-2">
-                    <span class="w-20 font-bold text-black tracking-widest">姓 名</span>
-                    <input type="text" id="detail-name" class="flex-1 border border-slate-300 rounded-sm px-2.5 py-1 bg-white text-[15px] focus:outline-none focus:border-blue-500">
+                    <span class="w-20 font-bold text-black tracking-widest flex-shrink-0">姓 名</span>
+                    <input type="text" id="detail-name" class="flex-1 min-w-0 border border-slate-300 rounded-sm px-2.5 py-1 bg-white text-[15px] focus:outline-none focus:border-blue-500">
                   </div>
 
                   <div class="flex items-center space-x-1.5">
-                    <span class="w-20 font-bold text-black tracking-widest">年 齡</span>
-                    <span class="text-slate-600 font-medium">約</span>
-                    <input type="number" id="detail-age" value="0" class="w-16 border border-slate-300 rounded-sm px-2 py-1 bg-white text-center font-bold text-[16px] focus:outline-none focus:border-blue-500">
-                    <span class="text-slate-600 font-medium pl-1">歲</span>
+                    <span class="w-20 font-bold text-black tracking-widest flex-shrink-0">年 齡</span>
+                    <span class="text-slate-600 font-medium flex-shrink-0">約</span>
+                    <input type="number" id="detail-age" value="0" class="w-16 border border-slate-300 rounded-sm px-2 py-1 bg-white text-center font-bold text-[16px] focus:outline-none focus:border-blue-500 flex-shrink-0">
+                    <span class="text-slate-600 font-medium pl-1 flex-shrink-0">歲</span>
                   </div>
                 </div>
 
-                <div class="w-[115px] border border-slate-300 bg-[#f0f0f2] rounded-lg p-2 flex flex-col items-center shadow-sm">
+                <div class="w-[115px] border border-slate-300 bg-[#f0f0f2] rounded-lg p-2 flex flex-col items-center shadow-sm flex-shrink-0">
                   <div class="text-[14px] font-bold text-slate-800 mb-2">檢傷級別</div>
                   <div class="grid grid-cols-2 gap-2">
                     <button type="button" onclick="selectTriageLevel('red')" id="btn-lvl-red" class="w-10 h-10 rounded-md border-2 border-[#ff3b50] bg-white flex items-center justify-center transition hover:opacity-90">
@@ -306,7 +363,7 @@
 
               <div class="flex items-center justify-between mt-3">
                 <div class="flex items-center space-x-3">
-                  <span class="w-20 font-bold text-black tracking-widest">性 別</span>
+                  <span class="w-20 font-bold text-black tracking-widest flex-shrink-0">性 別</span>
                   <label class="flex items-center space-x-1.5 cursor-pointer">
                     <input type="radio" name="gender" value="男" checked class="text-blue-600 focus:ring-0">
                     <span class="font-bold">男</span>
@@ -327,14 +384,14 @@
               </div>
 
               <div class="flex items-center space-x-2 mt-3">
-                <span class="w-20 font-bold text-black tracking-widest">身 分</span>
-                <div class="relative flex-1 flex space-x-2">
-                  <select class="border border-slate-300 rounded-sm px-2.5 py-1 bg-white text-blue-600 font-bold text-[14px] focus:outline-none">
+                <span class="w-20 font-bold text-black tracking-widest flex-shrink-0">身 分</span>
+                <div class="relative flex-1 min-w-0 flex space-x-2">
+                  <select class="border border-slate-300 rounded-sm px-2.5 py-1 bg-white text-blue-600 font-bold text-[14px] focus:outline-none flex-shrink-0">
                     <option>身分證字號 ▾</option>
                     <option>居留證號 ▾</option>
                     <option>護照號碼 ▾</option>
                   </select>
-                  <input type="text" id="detail-idcard" class="flex-1 border border-slate-300 rounded-sm px-2.5 py-1 bg-white text-[15px] focus:outline-none">
+                  <input type="text" id="detail-idcard" class="flex-1 min-w-0 border border-slate-300 rounded-sm px-2.5 py-1 bg-white text-[15px] focus:outline-none">
                 </div>
               </div>
 
@@ -356,6 +413,7 @@
               </div>
             </div>
 
+            <!-- 五點珠飾分隔線 -->
             <div class="py-2.5 flex items-center justify-center">
               <div class="flex-1 h-[1px] bg-slate-400"></div>
               <div class="flex items-center space-x-1.5 px-3">
@@ -368,13 +426,14 @@
               <div class="flex-1 h-[1px] bg-slate-400"></div>
             </div>
 
+            <!-- 後送資訊區 -->
             <div class="space-y-3">
               <div class="flex items-center justify-between">
                 <span class="font-bold text-[17px] text-black">後送資訊</span>
                 <div class="flex items-center space-x-2">
-                  <span class="font-bold text-black">救護站名</span>
+                  <span class="font-bold text-black flex-shrink-0">救護站名</span>
                   <select id="detail-station" class="border border-slate-300 rounded-sm px-2.5 py-1 bg-white text-blue-600 font-bold text-[14px] focus:outline-none">
-                    <option value="第一救護站">第一救護站 ▾</option>
+                    <option value="第一救護站" selected>第一救護站 ▾</option>
                     <option value="第二救護站">第二救護站 ▾</option>
                   </select>
                 </div>
@@ -382,22 +441,23 @@
 
               <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-2">
-                  <span class="font-bold text-black">車輛縣市</span>
+                  <span class="font-bold text-black flex-shrink-0">車輛縣市</span>
                   <select id="detail-city" class="border border-slate-300 rounded-sm px-2.5 py-1 bg-white text-blue-600 font-bold text-[14px] focus:outline-none">
                     <option value="桃園市" selected>桃園市 ▾</option>
                     <option value="其他縣市">其他縣市 ▾</option>
                   </select>
                 </div>
                 <div class="flex items-center space-x-2">
-                  <span class="font-bold text-black">到達醫院</span>
-                  <div id="switch-arrived" onclick="toggleArrivedSwitch()" class="switch-toggle"></div>
+                  <span class="font-bold text-black flex-shrink-0">到達醫院</span>
+                  <div id="switch-arrived" onclick="toggleArrivedSwitch()" class="switch-toggle flex-shrink-0"></div>
                 </div>
               </div>
 
+              <!-- 後送車輛：預設「請選擇」 -->
               <div class="flex items-center space-x-2">
-                <span class="font-bold text-black">後送車輛</span>
-                <select id="detail-vehicle" onchange="handleVehicleChange(this)" class="border border-slate-300 rounded-sm px-2.5 py-1 bg-white text-blue-600 font-bold text-[14px] focus:outline-none">
-                  <option value="">請選擇 ▾</option>
+                <span class="font-bold text-black flex-shrink-0">後送車輛</span>
+                <select id="detail-vehicle" onchange="handleVehicleChange(this)" class="border border-slate-300 rounded-sm px-2 py-1 bg-white text-blue-600 font-bold text-[14px] focus:outline-none flex-1 min-w-0">
+                  <option value="" selected>請選擇 ▾</option>
                   <option value="復興91">復興91</option>
                   <option value="復興92">復興92</option>
                   <option value="大溪91">大溪91</option>
@@ -410,31 +470,31 @@
                   <option value="龍潭92">龍潭92</option>
                   <option value="高平91">高平91</option>
                   <option value="高平92">高平92</option>
-                  <option value="巴陵91" selected>巴陵91</option>
+                  <option value="巴陵91">巴陵91</option>
                   <option value="巴陵92">巴陵92</option>
                   <option value="其他">其他 ▾</option>
                 </select>
-                <span class="text-slate-600 text-xs">其他</span>
-                <input type="text" id="detail-vehicle-other" placeholder="呼號/車牌名" class="flex-1 border border-slate-300 rounded-sm px-2.5 py-1 bg-white text-[14px] placeholder-slate-400 focus:outline-none">
+                <span class="text-slate-600 text-xs flex-shrink-0">其他</span>
+                <input type="text" id="detail-vehicle-other" placeholder="呼號/車牌名" class="flex-1 min-w-0 border border-slate-300 rounded-sm px-2 py-1 bg-white text-[14px] placeholder-slate-400 focus:outline-none">
               </div>
 
-              <!-- 後送醫院 (依距離由近到遠排序) -->
+              <!-- 後送醫院 -->
               <div class="space-y-1">
                 <div class="flex items-center space-x-2">
-                  <span class="font-bold text-black w-20">後送醫院</span>
-                  <select id="detail-hospital" onchange="handleHospitalChange(this)" class="border border-slate-300 rounded-sm px-2.5 py-1.5 flex-1 bg-white text-blue-700 font-bold text-[14px] focus:outline-none">
+                  <span class="font-bold text-black w-20 flex-shrink-0">後送醫院</span>
+                  <select id="detail-hospital" onchange="handleHospitalChange(this)" class="border border-slate-300 rounded-sm px-2 py-1.5 flex-1 min-w-0 bg-white text-blue-700 font-bold text-[14px] focus:outline-none truncate">
                     <!-- 動態注入 -->
                   </select>
                 </div>
                 <div class="flex items-center space-x-2 pt-1">
-                  <span class="w-20 text-right text-slate-500 font-bold text-xs pr-1">其他:</span>
-                  <input type="text" id="detail-hospital-other" placeholder="請輸入其他醫院" class="flex-1 border border-slate-300 rounded-sm px-2.5 py-1 bg-white text-[14px] placeholder-slate-400 focus:outline-none">
+                  <span class="w-20 text-right text-slate-500 font-bold text-xs pr-1 flex-shrink-0">其他:</span>
+                  <input type="text" id="detail-hospital-other" placeholder="請輸入其他醫院" class="flex-1 min-w-0 border border-slate-300 rounded-sm px-2.5 py-1 bg-white text-[14px] placeholder-slate-400 focus:outline-none">
                 </div>
               </div>
 
               <div class="flex items-center space-x-2 pt-1">
-                <span class="font-serif italic font-black text-[16px] tracking-tighter text-black">TEMSIS ID</span>
-                <div class="border border-slate-400 rounded p-0.5 bg-white flex items-center justify-center relative w-8 h-6 cursor-pointer">
+                <span class="font-serif italic font-black text-[16px] tracking-tighter text-black flex-shrink-0">TEMSIS ID</span>
+                <div class="border border-slate-400 rounded p-0.5 bg-white flex items-center justify-center relative w-8 h-6 cursor-pointer flex-shrink-0">
                   <svg class="w-6 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="3" y1="5" x2="3" y2="19" stroke-width="2"/>
                     <line x1="7" y1="5" x2="7" y2="19" stroke-width="1.5"/>
@@ -444,10 +504,11 @@
                   </svg>
                   <div class="absolute inset-x-0 top-1/2 h-[1.8px] bg-red-600"></div>
                 </div>
-                <input type="text" id="detail-temsis" placeholder="到院後掃描醫院病歷碼" class="flex-1 border border-slate-300 rounded-sm px-2.5 py-1 bg-white font-mono text-[14px] focus:outline-none">
+                <input type="text" id="detail-temsis" placeholder="到院後掃描醫院病歷碼" class="flex-1 min-w-0 border border-slate-300 rounded-sm px-2.5 py-1 bg-white font-mono text-[14px] focus:outline-none">
               </div>
             </div>
 
+            <!-- 儲存按鈕 -->
             <div class="pt-4 pb-4 flex flex-col items-center space-y-2">
               <button type="button" onclick="savePatientDetail()" class="w-56 py-2.5 bg-gradient-to-r from-[#ff7e36] to-[#ff5d22] text-white font-bold text-[18px] rounded-full shadow-md hover:opacity-90 active:scale-95 transition">
                 儲存
@@ -460,7 +521,7 @@
           </div>
         </div>
 
-        <!-- 傷卡序號快速挑選彈跳視窗 -->
+        <!-- 傷卡序號挑選彈跳視窗 -->
         <div id="modal-card-picker" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden">
           <div class="bg-white rounded-2xl p-4 w-full max-w-sm max-h-[85vh] flex flex-col shadow-2xl">
             <div class="flex justify-between items-center border-b pb-2">
@@ -484,36 +545,47 @@
     </section>
 
     <!-- ========================================================================= -->
-    <!-- 分頁面二：傷卡生成列印 (A3 滿版鏡像) -->
+    <!-- 分頁面二：傷卡生成列印 (支援 A4 / A3 自由切換設定) -->
     <!-- ========================================================================= -->
     <section id="tab-print" class="tab-content flex-1 flex-col items-center p-3 sm:p-4 hidden">
-      <div class="no-print bg-white p-4 rounded-xl shadow-md border border-slate-200 max-w-2xl w-full mb-4 flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <label class="text-xs font-bold text-slate-700 block mb-1">傷卡張數 (5~50 張，5張/頁)：</label>
-          <select id="print-count-select" onchange="renderPrintCards()" class="border border-slate-300 rounded px-3 py-1 text-xs font-bold bg-white">
-            <option value="5">5 張 (1 張 A3 - 正反 2 頁)</option>
-            <option value="10" selected>10 張 (2 張 A3 - 正反 4 頁)</option>
-            <option value="15">15 張 (3 張 A3 - 正反 6 頁)</option>
-            <option value="20">20 張 (4 張 A3 - 正反 8 頁)</option>
-            <option value="25">25 張 (5 張 A3 - 正反 10 頁)</option>
-            <option value="30">30 張 (6 張 A3 - 正反 12 頁)</option>
-            <option value="35">35 張 (7 張 A3 - 正反 14 頁)</option>
-            <option value="40">40 張 (8 張 A3 - 正反 16 頁)</option>
-            <option value="45">45 張 (9 張 A3 - 正反 18 頁)</option>
-            <option value="50">50 張 (10 張 A3 - 正反 20 頁)</option>
-          </select>
+      <div class="no-print bg-white p-4 rounded-xl shadow-md border border-slate-200 max-w-3xl w-full mb-4 flex flex-wrap items-center justify-between gap-4">
+        <div class="flex flex-wrap items-center gap-4">
+          <!-- 紙張規格選擇 -->
+          <div>
+            <label class="text-xs font-bold text-slate-700 block mb-1">紙張規格：</label>
+            <select id="print-paper-select" onchange="renderPrintCards()" class="border border-slate-300 rounded px-3 py-1.5 text-xs font-bold bg-white">
+              <option value="A3" selected>A3 橫向 (每面 5 張，1:1 原寸)</option>
+              <option value="A4_2">A4 直向 (每面 2 張，1:1 原寸 - 適合一般印表機)</option>
+              <option value="A4_5">A4 橫向 (每面 5 張，A4 等比縮印)</option>
+            </select>
+          </div>
+
+          <!-- 傷卡張數 -->
+          <div>
+            <label class="text-xs font-bold text-slate-700 block mb-1">傷卡張數：</label>
+            <select id="print-count-select" onchange="renderPrintCards()" class="border border-slate-300 rounded px-3 py-1.5 text-xs font-bold bg-white">
+              <option value="2">2 張</option>
+              <option value="4">4 張</option>
+              <option value="5">5 張</option>
+              <option value="10" selected>10 張</option>
+              <option value="15">15 張</option>
+              <option value="20">20 張</option>
+              <option value="25">25 張</option>
+              <option value="30">30 張</option>
+              <option value="40">40 張</option>
+              <option value="50">50 張</option>
+            </select>
+          </div>
         </div>
-        <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2 rounded-lg shadow text-xs transition">
-          🖨️ 列印 A3 雙面傷卡
+
+        <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2.5 rounded-lg shadow text-xs transition">
+          🖨️ 列印雙面傷卡
         </button>
       </div>
 
-      <div class="no-print bg-amber-50 border-l-4 border-amber-500 p-3 max-w-2xl w-full text-xs text-amber-900 rounded mb-6 space-y-1">
-        <div class="font-bold text-sm text-red-600">⚠️ 10人傷卡 4 頁標準設定指引：</div>
-        <div>1. <b>紙張大小</b>：選擇 <b>A3</b>，配置選 <b>橫向 (Landscape)</b>。</div>
-        <div>2. <b>選項</b>：務必勾選 <b>「背景圖形」</b>（黑色與彩色撕條才能完整印出）。</div>
-        <div>3. <b>雙面列印</b>：選擇 <b>「短邊翻轉 (Flip on Short Edge)」</b>（確保翻面後不倒立）。</div>
-        <div>4. <b>邊界設定</b>：選擇 <b>「無 (None)」</b>，比例設為 <b>100%</b>。</div>
+      <!-- 動態設定指引框 -->
+      <div id="print-guide-box" class="no-print bg-amber-50 border-l-4 border-amber-500 p-3 max-w-3xl w-full text-xs text-amber-900 rounded mb-6 space-y-1">
+        <!-- 動態由 JavaScript 依紙張載入 -->
       </div>
 
       <div id="print-sheets-container" class="space-y-8 print:space-y-0"></div>
@@ -531,63 +603,64 @@
             <circle cx="50" cy="50" r="18" fill="#1e3a8a"/>
             <polygon points="50,36 53,44 61,41 57,48 64,52 57,55 59,63 52,60 50,68 48,60 41,63 43,55 36,52 43,48 39,41 47,44" fill="white"/>
           </svg>
-          <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-[#134d7d] tracking-wide">大量傷病患救護管理系統</h1>
+          <h1 class="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-black text-[#134d7d] tracking-wide">大量傷病患救護管理系統</h1>
         </div>
 
-        <div class="flex flex-wrap items-center space-x-2 sm:space-x-3 text-base sm:text-lg">
-          <span class="text-slate-700 font-bold mr-2 hidden sm:inline text-lg" id="cmd-top-clock">最後更新: 下午 21:30:24</span>
-          <button id="btn-cmd-top-stations" onclick="switchCommanderSubView('view1')" class="bg-[#59a8cb] hover:bg-[#4593b5] text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-[4px] font-bold text-base sm:text-lg transition">
+        <div class="flex flex-wrap items-center space-x-2 sm:space-x-3 text-sm sm:text-base lg:text-lg">
+          <span class="text-slate-700 font-bold mr-2 hidden sm:inline" id="cmd-top-clock">最後更新: 下午 21:30:24</span>
+          <button id="btn-cmd-top-stations" onclick="switchCommanderSubView('view1')" class="bg-[#59a8cb] hover:bg-[#4593b5] text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-[4px] font-bold text-sm sm:text-base transition">
             救護站列表
           </button>
-          <button onclick="switchCommanderSubView('view1')" class="bg-[#59a8cb] hover:bg-[#4593b5] text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-[4px] font-bold text-base sm:text-lg transition">
+          <button onclick="switchCommanderSubView('view1')" class="bg-[#59a8cb] hover:bg-[#4593b5] text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-[4px] font-bold text-sm sm:text-base transition">
             案件列表
           </button>
-          <button onclick="switchTab('tab-mobile')" class="bg-[#59a8cb] hover:bg-[#4593b5] text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-[4px] font-bold text-base sm:text-lg transition">
+          <button onclick="switchTab('tab-mobile')" class="bg-[#59a8cb] hover:bg-[#4593b5] text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-[4px] font-bold text-sm sm:text-base transition">
             回到選擇系統
           </button>
         </div>
       </div>
 
+      <!-- 案件概要與官方四色數據方塊 (全螢幕自適應) -->
       <div class="bg-white/95 p-3.5 sm:p-5 border-b border-sky-200 flex flex-wrap justify-between items-center gap-4">
-        <div class="text-[24px] sm:text-[25px] lg:text-[27px] space-y-2 text-slate-800 font-medium min-w-[300px] leading-relaxed">
+        <div class="text-[16px] sm:text-[20px] lg:text-[25px] xl:text-[27px] space-y-2 text-slate-800 font-medium min-w-[280px] leading-relaxed">
           <div><span class="font-bold">大傷案件 : </span>巴陵分隊大傷測試案件  <span class="font-bold">目前狀態 : </span><span class="font-bold text-slate-900">進行中</span></div>
           <div><span class="font-bold">大傷案號 : </span><span class="font-mono font-bold">03260928085801</span>  <span class="font-bold">案發縣市 : </span>桃園市</div>
           <div><span class="font-bold">開案時間 : </span>09/28 08:58:46  <span class="font-bold">案發時間 : </span>09/28 08:57:01</div>
           <div>
             <span class="font-bold">救護站名 : </span>
-            <a onclick="switchCommanderSubView('view3')" class="text-[#10629c] font-black underline cursor-pointer hover:text-blue-800 text-[25px] sm:text-[27px]">第一救護站</a>
+            <a onclick="switchCommanderSubView('view3')" class="text-[#10629c] font-black underline cursor-pointer hover:text-blue-800 text-[18px] sm:text-[22px] lg:text-[26px]">第一救護站</a>
           </div>
         </div>
 
         <div class="flex flex-col items-center space-y-3 w-full sm:w-auto">
           <div class="flex items-center space-x-2 sm:space-x-3 text-center overflow-x-auto max-w-full">
-            <div class="bg-[#cfd4d8] text-slate-900 font-bold px-4 sm:px-5 py-2 rounded-[5px] min-w-[85px] sm:min-w-[105px] text-base sm:text-lg">
-              總計<span id="c-badge-total" class="font-black text-xl sm:text-2xl ml-1">15</span>
+            <div class="bg-[#cfd4d8] text-slate-900 font-bold px-3 sm:px-5 py-1.5 rounded-[5px] min-w-[65px] sm:min-w-[95px] text-xs sm:text-base">
+              總計<span id="c-badge-total" class="font-black text-sm sm:text-xl lg:text-2xl ml-1">15</span>
             </div>
-            <div id="c-badge-black" class="bg-[#333333] text-white font-black px-4 sm:px-5 py-2 rounded-[5px] min-w-[50px] sm:min-w-[70px] text-xl sm:text-2xl">
+            <div id="c-badge-black" class="bg-[#333333] text-white font-black px-3 sm:px-5 py-1.5 rounded-[5px] min-w-[40px] sm:min-w-[60px] text-sm sm:text-xl lg:text-2xl">
               3
             </div>
-            <div id="c-badge-red" class="bg-[#e6495a] text-white font-black px-4 sm:px-5 py-2 rounded-[5px] min-w-[50px] sm:min-w-[70px] text-xl sm:text-2xl">
+            <div id="c-badge-red" class="bg-[#e6495a] text-white font-black px-3 sm:px-5 py-1.5 rounded-[5px] min-w-[40px] sm:min-w-[60px] text-sm sm:text-xl lg:text-2xl">
               7
             </div>
-            <div id="c-badge-yellow" class="bg-[#f6c444] text-slate-900 font-black px-4 sm:px-5 py-2 rounded-[5px] min-w-[50px] sm:min-w-[70px] text-xl sm:text-2xl">
+            <div id="c-badge-yellow" class="bg-[#f6c444] text-slate-900 font-black px-3 sm:px-5 py-1.5 rounded-[5px] min-w-[40px] sm:min-w-[60px] text-sm sm:text-xl lg:text-2xl">
               3
             </div>
-            <div id="c-badge-green" class="bg-[#4caf50] text-white font-black px-4 sm:px-5 py-2 rounded-[5px] min-w-[50px] sm:min-w-[70px] text-xl sm:text-2xl">
+            <div id="c-badge-green" class="bg-[#4caf50] text-white font-black px-3 sm:px-5 py-1.5 rounded-[5px] min-w-[40px] sm:min-w-[60px] text-sm sm:text-xl lg:text-2xl">
               2
             </div>
           </div>
 
-          <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-7 text-[22px] sm:text-[25px] text-slate-800 font-medium">
-            <div class="flex items-center space-x-2">
+          <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-7 text-[13px] sm:text-[18px] lg:text-[24px] text-slate-800 font-medium">
+            <div class="flex items-center space-x-1.5">
               <span>現場數據</span>
-              <span class="w-3.5 h-3.5 bg-[#333] inline-block"></span>
+              <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-[#333] inline-block"></span>
               <span>比例 : <b id="c-pct-onsite" class="text-slate-900 font-bold">20.0%</b></span>
             </div>
-            <div class="flex items-center space-x-2">
-              <span class="w-3.5 h-3.5 bg-[#e6495a] inline-block"></span>
-              <span class="w-3.5 h-3.5 bg-[#f6c444] inline-block"></span>
-              <span class="w-3.5 h-3.5 bg-[#4caf50] inline-block"></span>
+            <div class="flex items-center space-x-1.5">
+              <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-[#e6495a] inline-block"></span>
+              <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-[#f6c444] inline-block"></span>
+              <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-[#4caf50] inline-block"></span>
               <span>比例 : <b id="c-pct-transit" class="text-slate-900 font-bold">80.0%</b></span>
             </div>
             <div>
@@ -604,10 +677,10 @@
 
           <!-- 【圖一】救護站列表 -->
           <div id="cmd-sub-view1" class="cmd-view flex-1 flex flex-col space-y-4">
-            <div class="flex flex-wrap justify-between items-center text-[20px] sm:text-[24px] text-slate-700 gap-3">
+            <div class="flex flex-wrap justify-between items-center text-xs sm:text-base lg:text-[22px] text-slate-700 gap-3">
               <div class="flex items-center space-x-2">
                 <span>每頁顯示</span>
-                <select class="border border-slate-300 rounded px-2.5 py-1 bg-white font-medium text-[20px] sm:text-[24px]">
+                <select class="border border-slate-300 rounded px-2 py-1 bg-white font-medium text-xs sm:text-base lg:text-[20px]">
                   <option>5</option>
                   <option>10</option>
                 </select>
@@ -615,33 +688,33 @@
               </div>
               <div class="flex flex-wrap items-center gap-2">
                 <span>日期區間:</span>
-                <input type="text" value="年/月/日 --:--" class="border border-slate-300 rounded px-3 py-1 text-center text-slate-400 bg-white w-44 text-[19px] sm:text-[22px]">
+                <input type="text" value="年/月/日 --:--" class="border border-slate-300 rounded px-2.5 py-1 text-center text-slate-400 bg-white w-32 sm:w-44 text-xs sm:text-sm lg:text-[19px]">
                 <span>到</span>
-                <input type="text" value="年/月/日 --:--" class="border border-slate-300 rounded px-3 py-1 text-center text-slate-400 bg-white w-44 text-[19px] sm:text-[22px]">
+                <input type="text" value="年/月/日 --:--" class="border border-slate-300 rounded px-2.5 py-1 text-center text-slate-400 bg-white w-32 sm:w-44 text-xs sm:text-sm lg:text-[19px]">
               </div>
               <div class="flex items-center space-x-2">
                 <span>搜尋:</span>
-                <input type="text" class="border border-slate-300 rounded px-3 py-1 bg-white w-36 text-[19px] sm:text-[22px]">
+                <input type="text" class="border border-slate-300 rounded px-2.5 py-1 bg-white w-28 sm:w-36 text-xs sm:text-sm lg:text-[19px]">
               </div>
             </div>
 
             <div class="overflow-x-auto custom-scrollbar flex-1 border border-slate-200 rounded">
-              <table class="w-full text-[24px] sm:text-[27px] text-center border-collapse min-w-[960px]">
+              <table class="w-full text-xs sm:text-base lg:text-[24px] text-center border-collapse min-w-[780px] lg:min-w-[960px]">
                 <thead>
-                  <tr class="bg-[#549dbb] text-white font-bold h-14 text-[24px] sm:text-[25px]">
-                    <th class="w-16">項次</th>
-                    <th class="w-24">救護站號</th>
-                    <th class="w-36">救護站名</th>
-                    <th class="w-48">開始時間</th>
-                    <th class="w-32">結束時間</th>
-                    <th class="w-36">總檢傷人數</th>
-                    <th class="w-36">未送醫人數</th>
-                    <th class="w-36">送醫中人數</th>
-                    <th class="w-36">到院人數</th>
+                  <tr class="bg-[#549dbb] text-white font-bold h-11 lg:h-14 text-xs sm:text-base lg:text-[25px]">
+                    <th class="w-12 lg:w-16">項次</th>
+                    <th class="w-16 lg:w-24">救護站號</th>
+                    <th class="w-24 lg:w-36">救護站名</th>
+                    <th class="w-32 lg:w-48">開始時間</th>
+                    <th class="w-20 lg:w-32">結束時間</th>
+                    <th class="w-24 lg:w-36">總檢傷人數</th>
+                    <th class="w-24 lg:w-36">未送醫人數</th>
+                    <th class="w-24 lg:w-36">送醫中人數</th>
+                    <th class="w-24 lg:w-36">到院人數</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200">
-                  <tr class="h-28 bg-white hover:bg-slate-50 transition">
+                  <tr class="h-20 lg:h-28 bg-white hover:bg-slate-50 transition">
                     <td class="font-bold">1</td>
                     <td class="font-mono">00</td>
                     <td><a onclick="switchCommanderSubView('view2')" class="text-[#10629c] font-black underline cursor-pointer hover:text-blue-700">全部</a></td>
@@ -652,11 +725,11 @@
                     <td><div id="v1-transit-all" class="flex flex-col items-center"></div></td>
                     <td><div id="v1-arrived-all" class="flex flex-col items-center"></div></td>
                   </tr>
-                  <tr class="h-28 bg-[#fbf8ea] hover:bg-amber-100/50 transition">
+                  <tr class="h-20 lg:h-28 bg-[#fbf8ea] hover:bg-amber-100/50 transition">
                     <td class="font-bold">2</td>
                     <td class="font-mono">01</td>
                     <td><a onclick="switchCommanderSubView('view2')" class="text-[#10629c] font-black underline cursor-pointer hover:text-blue-700">第一救護站</a></td>
-                    <td class="font-mono text-[22px] sm:text-[25px]">2026/09/28 08:59:09</td>
+                    <td class="font-mono">2026/09/28 08:59:09</td>
                     <td>-</td>
                     <td><div id="v1-total-st1" class="flex flex-col items-center"></div></td>
                     <td><div id="v1-onsite-st1" class="flex flex-col items-center"></div></td>
@@ -667,38 +740,38 @@
               </table>
             </div>
 
-            <div class="flex justify-between items-center text-[19px] sm:text-[23px] text-slate-600 pt-3 border-t">
+            <div class="flex justify-between items-center text-xs sm:text-base lg:text-[20px] text-slate-600 pt-3 border-t">
               <div>顯示第 1 至 2 筆資料，共 2 筆</div>
               <div class="flex items-center space-x-2">
-                <button class="px-3.5 py-1.5 border rounded bg-slate-50 text-slate-400 font-medium">上一頁</button>
-                <button class="px-3.5 py-1.5 border rounded bg-blue-600 text-white font-bold">1</button>
-                <button class="px-3.5 py-1.5 border rounded bg-slate-50 text-slate-400 font-medium">下一頁</button>
+                <button class="px-2.5 sm:px-3.5 py-1 border rounded bg-slate-50 text-slate-400 font-medium">上一頁</button>
+                <button class="px-2.5 sm:px-3.5 py-1 border rounded bg-blue-600 text-white font-bold">1</button>
+                <button class="px-2.5 sm:px-3.5 py-1 border rounded bg-slate-50 text-slate-400 font-medium">下一頁</button>
               </div>
             </div>
           </div>
 
-          <!-- 【圖二】傷病患清單 -->
+          <!-- 【圖二】傷病患清單 (每頁顯示 5/10/50 筆) -->
           <div id="cmd-sub-view2" class="cmd-view flex-1 flex flex-col space-y-4 hidden">
-            <div class="flex flex-wrap items-center gap-2 sm:gap-3 border-b border-sky-300 pb-1.5">
-              <button onclick="switchCommanderSubView('view2')" class="bg-[#c2e3f8] text-[#134d7d] border-t-2 border-x-2 border-[#549dbb] px-6 sm:px-8 py-2.5 rounded-t font-black text-[22px] sm:text-[25px]">
+            <div class="flex flex-wrap items-center gap-1.5 sm:gap-2.5 border-b border-sky-300 pb-1.5">
+              <button onclick="switchCommanderSubView('view2')" class="bg-[#c2e3f8] text-[#134d7d] border-t-2 border-x-2 border-[#549dbb] px-4 sm:px-6 py-2 rounded-t font-black text-xs sm:text-base lg:text-[22px]">
                 傷病患清單
               </button>
-              <button onclick="switchCommanderSubView('view3')" class="bg-[#7cb7d8] hover:bg-[#68a8cc] text-white px-6 sm:px-8 py-2.5 rounded-t font-bold text-[22px] sm:text-[25px] transition">
+              <button onclick="switchCommanderSubView('view3')" class="bg-[#7cb7d8] hover:bg-[#68a8cc] text-white px-4 sm:px-6 py-2 rounded-t font-bold text-xs sm:text-base lg:text-[22px] transition">
                 後送醫院收治情形
               </button>
-              <button class="bg-[#00ba60] text-white px-6 sm:px-8 py-2.5 rounded font-bold text-[22px] sm:text-[25px] shadow-sm hover:opacity-90">
+              <button class="bg-[#00ba60] text-white px-4 sm:px-6 py-2 rounded font-bold text-xs sm:text-base lg:text-[22px] shadow-sm hover:opacity-90">
                 傷患報表
               </button>
-              <button class="bg-[#00ba60] text-white px-6 sm:px-8 py-2.5 rounded font-bold text-[22px] sm:text-[25px] shadow-sm hover:opacity-90">
+              <button class="bg-[#00ba60] text-white px-4 sm:px-6 py-2 rounded font-bold text-xs sm:text-base lg:text-[22px] shadow-sm hover:opacity-90">
                 下載圖片
               </button>
             </div>
 
-            <div class="flex flex-wrap justify-between items-center text-[20px] sm:text-[24px] gap-3 pt-1">
+            <div class="flex flex-wrap justify-between items-center text-xs sm:text-base lg:text-[21px] gap-2.5 pt-1">
               <div class="flex items-center space-x-2">
                 <span>每頁顯示</span>
-                <!-- ★ 支援 5 / 10 / 50 筆資料檢視 -->
-                <select id="v2-pagesize-select" onchange="renderCommanderPatientsView2()" class="border border-slate-300 rounded px-2.5 py-1 bg-white font-medium text-[20px]">
+                <!-- ★ 依指令支援 5 / 10 / 50 筆資料切換 -->
+                <select id="v2-pagesize-select" onchange="renderCommanderPatientsView2()" class="border border-slate-300 rounded px-2 py-1 bg-white font-medium text-xs sm:text-base lg:text-[20px]">
                   <option value="5" selected>5</option>
                   <option value="10">10</option>
                   <option value="50">50</option>
@@ -706,109 +779,105 @@
                 <span>筆資料</span>
               </div>
 
-              <div class="flex items-center space-x-3">
+              <div class="flex items-center space-x-2 sm:space-x-3">
                 <span class="font-bold text-slate-800">傷票級別</span>
                 <button onclick="filterPatientLevel('ALL')" class="p-1 border rounded bg-white hover:bg-slate-100 flex items-center justify-center">
-                  <div class="grid grid-cols-2 gap-0.5 w-6 h-6">
+                  <div class="grid grid-cols-2 gap-0.5 w-4 h-4 sm:w-5 sm:h-5">
                     <span class="bg-[#333]"></span><span class="bg-[#e6495a]"></span>
                     <span class="bg-[#f6c444]"></span><span class="bg-[#4caf50]"></span>
                   </div>
                 </button>
-                <button onclick="filterPatientLevel('black')" class="w-7 h-7 bg-[#333] rounded-sm hover:opacity-90"></button>
-                <button onclick="filterPatientLevel('red')" class="w-7 h-7 bg-[#e6495a] rounded-sm hover:opacity-90"></button>
-                <button onclick="filterPatientLevel('yellow')" class="w-7 h-7 bg-[#f6c444] rounded-sm hover:opacity-90"></button>
-                <button onclick="filterPatientLevel('green')" class="w-7 h-7 bg-[#4caf50] rounded-sm hover:opacity-90"></button>
+                <button onclick="filterPatientLevel('black')" class="w-5 h-5 sm:w-6 sm:h-6 bg-[#333] rounded-sm hover:opacity-90"></button>
+                <button onclick="filterPatientLevel('red')" class="w-5 h-5 sm:w-6 sm:h-6 bg-[#e6495a] rounded-sm hover:opacity-90"></button>
+                <button onclick="filterPatientLevel('yellow')" class="w-5 h-5 sm:w-6 sm:h-6 bg-[#f6c444] rounded-sm hover:opacity-90"></button>
+                <button onclick="filterPatientLevel('green')" class="w-5 h-5 sm:w-6 sm:h-6 bg-[#4caf50] rounded-sm hover:opacity-90"></button>
               </div>
 
-              <div class="flex flex-wrap items-center gap-2.5">
-                <div class="flex space-x-2">
-                  <button onclick="filterPatientStatus('ALL')" class="cmd-st-btn bg-[#1565c0] text-white px-3.5 py-1 rounded text-[19px] font-bold">全部</button>
-                  <button onclick="filterPatientStatus('現場')" class="cmd-st-btn bg-[#2196f3] text-white px-3.5 py-1 rounded text-[19px] font-bold">現場</button>
-                  <button onclick="filterPatientStatus('送醫中')" class="cmd-st-btn bg-[#2196f3] text-white px-3.5 py-1 rounded text-[19px] font-bold">送醫中</button>
-                  <button onclick="filterPatientStatus('已到院')" class="cmd-st-btn bg-[#2196f3] text-white px-3.5 py-1 rounded text-[19px] font-bold">已到院</button>
+              <div class="flex flex-wrap items-center gap-2">
+                <div class="flex space-x-1.5">
+                  <button onclick="filterPatientStatus('ALL')" class="cmd-st-btn bg-[#1565c0] text-white px-2.5 sm:px-3 py-1 rounded text-xs sm:text-base font-bold">全部</button>
+                  <button onclick="filterPatientStatus('現場')" class="cmd-st-btn bg-[#2196f3] text-white px-2.5 sm:px-3 py-1 rounded text-xs sm:text-base font-bold">現場</button>
+                  <button onclick="filterPatientStatus('送醫中')" class="cmd-st-btn bg-[#2196f3] text-white px-2.5 sm:px-3 py-1 rounded text-xs sm:text-base font-bold">送醫中</button>
+                  <button onclick="filterPatientStatus('已到院')" class="cmd-st-btn bg-[#2196f3] text-white px-2.5 sm:px-3 py-1 rounded text-xs sm:text-base font-bold">已到院</button>
                 </div>
-                <div class="flex items-center space-x-2 pl-2">
+                <div class="flex items-center space-x-1.5 pl-1">
                   <span>搜尋:</span>
-                  <input type="text" id="v2-search-input" oninput="renderCommanderPatientsView2()" class="border border-slate-300 rounded px-3 py-1 bg-white w-36 text-[20px] sm:text-[23px]">
+                  <input type="text" id="v2-search-input" oninput="renderCommanderPatientsView2()" class="border border-slate-300 rounded px-2.5 py-1 bg-white w-28 sm:w-36 text-xs sm:text-base">
                 </div>
               </div>
             </div>
 
             <div class="overflow-x-auto custom-scrollbar flex-1 border border-slate-200 rounded">
-              <table class="w-full text-[24px] sm:text-[27px] text-center border-collapse min-w-[1280px]">
+              <table class="w-full text-xs sm:text-base lg:text-[24px] text-center border-collapse min-w-[1000px] lg:min-w-[1280px]">
                 <thead>
-                  <tr class="bg-[#549dbb] text-white font-bold h-14 text-[24px] sm:text-[25px]">
-                    <th class="w-16">項次</th>
-                    <th class="w-40">檢傷編碼</th>
-                    <th class="w-32">姓名</th>
-                    <th class="w-20">性別</th>
-                    <th class="w-20">年齡</th>
-                    <th class="w-32">狀態</th>
-                    <th class="w-32">後送車輛</th>
-                    <th class="w-36">後送醫院</th>
-                    <th class="w-48">離開現場時間</th>
-                    <th class="w-48">到院時間</th>
-                    <th class="w-28">救護紀錄</th>
-                    <th class="w-28">特徵照片</th>
-                    <th class="w-28">傷患資訊</th>
+                  <tr class="bg-[#549dbb] text-white font-bold h-11 lg:h-14 text-xs sm:text-base lg:text-[25px]">
+                    <th class="w-12 lg:w-16">項次</th>
+                    <th class="w-28 lg:w-40">檢傷編碼</th>
+                    <th class="w-24 lg:w-32">姓名</th>
+                    <th class="w-14 lg:w-20">性別</th>
+                    <th class="w-14 lg:w-20">年齡</th>
+                    <th class="w-24 lg:w-32">狀態</th>
+                    <th class="w-24 lg:w-32">後送車輛</th>
+                    <th class="w-28 lg:w-36">後送醫院</th>
+                    <th class="w-36 lg:w-48">離開現場時間</th>
+                    <th class="w-36 lg:w-48">到院時間</th>
+                    <th class="w-20 lg:w-28">救護紀錄</th>
+                    <th class="w-20 lg:w-28">特徵照片</th>
+                    <th class="w-20 lg:w-28">傷患資訊</th>
                   </tr>
                 </thead>
-                <tbody id="v2-patients-tbody" class="divide-y divide-slate-200">
-                  <!-- 動態注入 -->
-                </tbody>
+                <tbody id="v2-patients-tbody" class="divide-y divide-slate-200"></tbody>
               </table>
             </div>
 
-            <div class="flex justify-between items-center text-[19px] sm:text-[23px] text-slate-600 pt-3 border-t">
+            <div class="flex justify-between items-center text-xs sm:text-base lg:text-[20px] text-slate-600 pt-3 border-t">
               <div id="v2-pagination-info">顯示第 1 至 5 筆資料，共 15 筆</div>
               <div class="flex items-center space-x-2">
-                <button class="px-3.5 py-1.5 border rounded bg-slate-50 text-slate-400 font-medium">上一頁</button>
-                <button class="px-3.5 py-1.5 border rounded bg-blue-600 text-white font-bold">1</button>
-                <button class="px-3.5 py-1.5 border rounded bg-slate-50 text-slate-400 font-medium">下一頁</button>
+                <button class="px-2.5 sm:px-3.5 py-1 border rounded bg-slate-50 text-slate-400 font-medium">上一頁</button>
+                <button class="px-2.5 sm:px-3.5 py-1 border rounded bg-blue-600 text-white font-bold">1</button>
+                <button class="px-2.5 sm:px-3.5 py-1 border rounded bg-slate-50 text-slate-400 font-medium">下一頁</button>
               </div>
             </div>
           </div>
 
-          <!-- 【圖三】後送醫院收治情形 (只顯示有送醫中或已到院的醫院) -->
+          <!-- 【圖三】後送醫院收治情形 (★ 只顯示有送醫中或已到院的醫院) -->
           <div id="cmd-sub-view3" class="cmd-view flex-1 flex flex-col space-y-4 hidden">
-            <div class="flex flex-wrap items-center gap-2 sm:gap-3 border-b border-sky-300 pb-1.5">
-              <button onclick="switchCommanderSubView('view2')" class="bg-[#7cb7d8] hover:bg-[#68a8cc] text-white px-6 sm:px-8 py-2.5 rounded-t font-bold text-[22px] sm:text-[25px] transition">
+            <div class="flex flex-wrap items-center gap-1.5 sm:gap-2.5 border-b border-sky-300 pb-1.5">
+              <button onclick="switchCommanderSubView('view2')" class="bg-[#7cb7d8] hover:bg-[#68a8cc] text-white px-4 sm:px-6 py-2 rounded-t font-bold text-xs sm:text-base lg:text-[22px] transition">
                 傷病患清單
               </button>
-              <button onclick="switchCommanderSubView('view3')" class="bg-[#c2e3f8] text-[#134d7d] border-t-2 border-x-2 border-[#549dbb] px-6 sm:px-8 py-2.5 rounded-t font-black text-[22px] sm:text-[25px]">
+              <button onclick="switchCommanderSubView('view3')" class="bg-[#c2e3f8] text-[#134d7d] border-t-2 border-x-2 border-[#549dbb] px-4 sm:px-6 py-2 rounded-t font-black text-xs sm:text-base lg:text-[22px]">
                 後送醫院收治情形
               </button>
-              <button class="bg-[#00ba60] text-white px-6 sm:px-8 py-2.5 rounded font-bold text-[22px] sm:text-[25px] shadow-sm hover:opacity-90">
+              <button class="bg-[#00ba60] text-white px-4 sm:px-6 py-2 rounded font-bold text-xs sm:text-base lg:text-[22px] shadow-sm hover:opacity-90">
                 傷患報表
               </button>
-              <button class="bg-[#00ba60] text-white px-6 sm:px-8 py-2.5 rounded font-bold text-[22px] sm:text-[25px] shadow-sm hover:opacity-90">
+              <button class="bg-[#00ba60] text-white px-4 sm:px-6 py-2 rounded font-bold text-xs sm:text-base lg:text-[22px] shadow-sm hover:opacity-90">
                 下載圖片
               </button>
             </div>
 
-            <div class="flex justify-end items-center text-[20px] sm:text-[24px] text-slate-700 pt-1">
+            <div class="flex justify-end items-center text-xs sm:text-base lg:text-[21px] text-slate-700 pt-1">
               <div class="flex items-center space-x-2">
                 <span>搜尋:</span>
-                <input type="text" id="v3-search-input" oninput="renderCommanderHospitalsView3()" class="border border-slate-300 rounded px-3 py-1 bg-white w-40 sm:w-48 text-[19px] sm:text-[23px]">
+                <input type="text" id="v3-search-input" oninput="renderCommanderHospitalsView3()" class="border border-slate-300 rounded px-2.5 py-1 bg-white w-32 sm:w-44 text-xs sm:text-base">
               </div>
             </div>
 
             <div class="overflow-x-auto custom-scrollbar flex-1 border border-slate-200 rounded">
-              <table class="w-full text-[24px] sm:text-[27px] text-center border-collapse min-w-[960px]">
+              <table class="w-full text-xs sm:text-base lg:text-[24px] text-center border-collapse min-w-[760px] lg:min-w-[960px]">
                 <thead>
-                  <tr class="bg-[#549dbb] text-white font-bold h-14 text-[24px] sm:text-[25px]">
-                    <th class="w-56 text-left pl-8">收治醫院</th>
-                    <th class="w-40">醫療能力分級</th>
-                    <th class="w-36">可容納人數</th>
-                    <th class="w-36">已送往人數</th>
-                    <th class="w-40">送醫中</th>
-                    <th class="w-40">已到院</th>
-                    <th class="w-40">總計</th>
+                  <tr class="bg-[#549dbb] text-white font-bold h-11 lg:h-14 text-xs sm:text-base lg:text-[25px]">
+                    <th class="w-44 lg:w-56 text-left pl-4 sm:pl-8">收治醫院</th>
+                    <th class="w-28 lg:w-40">醫療能力分級</th>
+                    <th class="w-24 lg:w-36">可容納人數</th>
+                    <th class="w-24 lg:w-36">已送往人數</th>
+                    <th class="w-28 lg:w-40">送醫中</th>
+                    <th class="w-28 lg:w-40">已到院</th>
+                    <th class="w-28 lg:w-40">總計</th>
                   </tr>
                 </thead>
-                <tbody id="v3-hospitals-tbody" class="divide-y divide-slate-200">
-                  <!-- 動態注入 -->
-                </tbody>
+                <tbody id="v3-hospitals-tbody" class="divide-y divide-slate-200"></tbody>
               </table>
             </div>
           </div>
@@ -816,35 +885,35 @@
         </div>
 
         <!-- 右側側邊欄：傷患後送數據看板 -->
-        <div class="w-full lg:w-80 bg-white/95 rounded-lg shadow-sm p-4 sm:p-5 flex flex-col space-y-3.5 text-[22px] flex-shrink-0">
-          <h3 class="font-black text-[#134d7d] text-[25px] sm:text-[27px] border-b border-slate-200 pb-2.5">傷患後送數據</h3>
-          <div class="grid grid-cols-2 lg:grid-cols-1 gap-3.5">
-            <div class="flex items-center space-x-4 p-3 border border-slate-200 rounded bg-white hover:bg-slate-50 transition">
-              <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#10b981] flex items-center justify-center text-white font-black text-xl flex-shrink-0">＋</div>
+        <div class="w-full lg:w-80 bg-white/95 rounded-lg shadow-sm p-3.5 sm:p-5 flex flex-col space-y-3.5 text-xs sm:text-base lg:text-[21px] flex-shrink-0">
+          <h3 class="font-black text-[#134d7d] text-base sm:text-xl lg:text-[26px] border-b border-slate-200 pb-2.5">傷患後送數據</h3>
+          <div class="grid grid-cols-2 lg:grid-cols-1 gap-2.5 sm:gap-3.5">
+            <div class="flex items-center space-x-3 p-2.5 sm:p-3 border border-slate-200 rounded bg-white hover:bg-slate-50 transition">
+              <div class="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-[#10b981] flex items-center justify-center text-white font-black text-sm sm:text-xl flex-shrink-0">＋</div>
               <div>
-                <div class="text-[19px] sm:text-[21px] text-slate-500 font-medium">後送中人數</div>
-                <div class="text-[23px] sm:text-[27px] font-black text-slate-900"><span id="sb-count-transit">11</span>人(<span id="sb-pct-transit">73.3%</span>)</div>
+                <div class="text-xs sm:text-sm lg:text-[18px] text-slate-500 font-medium">後送中人數</div>
+                <div class="text-sm sm:text-lg lg:text-[26px] font-black text-slate-900"><span id="sb-count-transit">11</span>人(<span id="sb-pct-transit">73.3%</span>)</div>
               </div>
             </div>
-            <div class="flex items-center space-x-4 p-3 border border-slate-200 rounded bg-white hover:bg-slate-50 transition">
-              <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#10b981] flex items-center justify-center text-white text-xl sm:text-2xl flex-shrink-0">🚑</div>
+            <div class="flex items-center space-x-3 p-2.5 sm:p-3 border border-slate-200 rounded bg-white hover:bg-slate-50 transition">
+              <div class="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-[#10b981] flex items-center justify-center text-white text-base sm:text-2xl flex-shrink-0">🚑</div>
               <div>
-                <div class="text-[19px] sm:text-[21px] text-slate-500 font-medium">到院人數</div>
-                <div class="text-[23px] sm:text-[27px] font-black text-slate-900"><span id="sb-count-arrived">1</span>人(<span id="sb-pct-arrived">6.7%</span>)</div>
+                <div class="text-xs sm:text-sm lg:text-[18px] text-slate-500 font-medium">到院人數</div>
+                <div class="text-sm sm:text-lg lg:text-[26px] font-black text-slate-900"><span id="sb-count-arrived">1</span>人(<span id="sb-pct-arrived">6.7%</span>)</div>
               </div>
             </div>
-            <div class="flex items-center space-x-4 p-3 border border-slate-200 rounded bg-white hover:bg-slate-50 transition">
-              <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#10b981] flex items-center justify-center text-white font-black text-xl flex-shrink-0">－</div>
+            <div class="flex items-center space-x-3 p-2.5 sm:p-3 border border-slate-200 rounded bg-white hover:bg-slate-50 transition">
+              <div class="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-[#10b981] flex items-center justify-center text-white font-black text-sm sm:text-xl flex-shrink-0">－</div>
               <div>
-                <div class="text-[19px] sm:text-[21px] text-slate-500 font-medium">未送醫人數</div>
-                <div class="text-[23px] sm:text-[27px] font-black text-slate-900"><span id="sb-count-onsite">3</span>人(<span id="sb-pct-onsite">20.0%</span>)</div>
+                <div class="text-xs sm:text-sm lg:text-[18px] text-slate-500 font-medium">未送醫人數</div>
+                <div class="text-sm sm:text-lg lg:text-[26px] font-black text-slate-900"><span id="sb-count-onsite">3</span>人(<span id="sb-pct-onsite">20.0%</span>)</div>
               </div>
             </div>
-            <div class="flex items-center space-x-4 p-3 border border-slate-200 rounded bg-white hover:bg-slate-50 transition">
-              <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#10b981] flex items-center justify-center text-white text-xl sm:text-2xl flex-shrink-0">🚗</div>
+            <div class="flex items-center space-x-3 p-2.5 sm:p-3 border border-slate-200 rounded bg-white hover:bg-slate-50 transition">
+              <div class="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-[#10b981] flex items-center justify-center text-white text-base sm:text-2xl flex-shrink-0">🚗</div>
               <div>
-                <div class="text-[19px] sm:text-[21px] text-slate-500 font-medium">後送車輛數</div>
-                <div class="text-[23px] sm:text-[27px] font-black text-slate-900"><span id="sb-count-vehicles">1</span>臺</div>
+                <div class="text-xs sm:text-sm lg:text-[18px] text-slate-500 font-medium">後送車輛數</div>
+                <div class="text-sm sm:text-lg lg:text-[26px] font-black text-slate-900"><span id="sb-count-vehicles">0</span>臺</div>
               </div>
             </div>
           </div>
@@ -859,55 +928,74 @@
   <!-- ★ 1:1 復刻【傷患評估】專屬彈跳視窗 (未填寫項目一律保持空白) -->
   <!-- ========================================================================= -->
   <div id="modal-patient-info" onclick="if(event.target===this) closePatientInfoModal()" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-3 sm:p-6 hidden">
-    <div class="bg-white rounded-xl p-6 sm:p-8 w-full max-w-4xl max-h-[92vh] flex flex-col shadow-2xl border border-slate-300 relative">
+    <div class="bg-white rounded-xl p-5 sm:p-8 w-full max-w-4xl max-h-[92vh] flex flex-col shadow-2xl border border-slate-300 relative">
       <button onclick="closePatientInfoModal()" class="absolute top-3 right-4 text-slate-400 hover:text-slate-700 text-3xl font-bold p-1">✕</button>
 
-      <div class="flex-1 overflow-y-auto pr-2 pt-1">
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
+      <div class="flex-1 overflow-y-auto pr-1 sm:pr-2 pt-1">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-6 items-stretch">
           
-          <div class="md:col-span-4 flex flex-col justify-start md:border-r md:border-slate-300 pr-0 md:pr-6 space-y-4">
-            <h3 class="text-[#2563eb] font-bold text-2xl tracking-wide">傷患評估</h3>
+          <div class="md:col-span-4 flex flex-col justify-start md:border-r md:border-slate-300 pr-0 md:pr-6 space-y-3 sm:space-y-4">
+            <h3 class="text-[#2563eb] font-bold text-xl sm:text-2xl tracking-wide">傷患評估</h3>
 
             <div class="space-y-1">
-              <div class="font-black text-slate-900 text-xl">檢傷編碼:</div>
-              <div id="m-info-id" class="font-serif font-black text-2xl text-slate-900 tracking-wider min-h-[30px]"></div>
+              <div class="font-black text-slate-900 text-base sm:text-xl">檢傷編碼:</div>
+              <div id="m-info-id" class="font-serif font-black text-xl sm:text-2xl text-slate-900 tracking-wider min-h-[30px]"></div>
             </div>
 
             <div class="space-y-1">
-              <div class="font-black text-slate-900 text-xl">姓名:</div>
-              <div id="m-info-name" class="font-bold text-2xl text-slate-900 min-h-[30px]"></div>
+              <div class="font-black text-slate-900 text-base sm:text-xl">姓名:</div>
+              <div id="m-info-name" class="font-bold text-xl sm:text-2xl text-slate-900 min-h-[30px]"></div>
             </div>
 
             <div class="space-y-1">
-              <div class="font-black text-slate-900 text-xl">電話:</div>
-              <div id="m-info-phone" class="font-medium text-xl text-slate-800 min-h-[28px]"></div>
+              <div class="font-black text-slate-900 text-base sm:text-xl">電話:</div>
+              <div id="m-info-phone" class="font-medium text-base sm:text-xl text-slate-800 min-h-[28px]"></div>
             </div>
 
             <div class="space-y-1">
-              <div class="font-black text-slate-900 text-xl">性別:</div>
-              <div id="m-info-gender" class="font-bold text-2xl text-slate-900 min-h-[30px]"></div>
+              <div class="font-black text-slate-900 text-base sm:text-xl">性別:</div>
+              <div id="m-info-gender" class="font-bold text-xl sm:text-2xl text-slate-900 min-h-[30px]"></div>
             </div>
 
             <div class="space-y-1">
-              <div class="font-black text-slate-900 text-xl">年齡:</div>
-              <div id="m-info-age" class="font-bold text-2xl text-slate-900 min-h-[30px]"></div>
+              <div class="font-black text-slate-900 text-base sm:text-xl">年齡:</div>
+              <div id="m-info-age" class="font-bold text-xl sm:text-2xl text-slate-900 min-h-[30px]"></div>
             </div>
           </div>
 
-          <div class="md:col-span-8 flex flex-col justify-between space-y-5">
+          <div class="md:col-span-8 flex flex-col justify-between space-y-4 sm:space-y-5">
             <div class="space-y-2">
-              <h4 class="text-[#2563eb] font-bold text-2xl tracking-wide">特徵說明</h4>
-              <div id="m-info-features" class="w-full min-h-[140px] border border-slate-300 rounded-lg p-4 text-2xl text-slate-900 font-bold bg-white leading-relaxed whitespace-pre-wrap shadow-inner"></div>
+              <h4 class="text-[#2563eb] font-bold text-xl sm:text-2xl tracking-wide">特徵說明</h4>
+              <div id="m-info-features" class="w-full min-h-[120px] sm:min-h-[140px] border border-slate-300 rounded-lg p-3 sm:p-4 text-lg sm:text-2xl text-slate-900 font-bold bg-white leading-relaxed whitespace-pre-wrap shadow-inner"></div>
             </div>
 
             <div class="space-y-2">
-              <h4 class="text-[#2563eb] font-bold text-2xl tracking-wide">補充說明</h4>
-              <div id="m-info-notes" class="w-full min-h-[160px] border border-slate-300 rounded-lg p-4 text-2xl text-slate-900 font-bold bg-white leading-relaxed whitespace-pre-wrap shadow-inner"></div>
+              <h4 class="text-[#2563eb] font-bold text-xl sm:text-2xl tracking-wide">補充說明</h4>
+              <div id="m-info-notes" class="w-full min-h-[140px] sm:min-h-[160px] border border-slate-300 rounded-lg p-3 sm:p-4 text-lg sm:text-2xl text-slate-900 font-bold bg-white leading-relaxed whitespace-pre-wrap shadow-inner"></div>
             </div>
           </div>
 
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- ★【特徵照片 - 未開放】專屬彈跳視窗 -->
+  <!-- ========================================================================= -->
+  <div id="modal-photo-notice" onclick="if(event.target===this) closePhotoNoticeModal()" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl p-6 w-full max-w-sm flex flex-col items-center text-center shadow-2xl border border-slate-200">
+      <div class="w-14 h-14 bg-amber-100 rounded-full flex items-center justify-center mb-3">
+        <svg class="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+      </div>
+      <h3 class="font-black text-2xl text-slate-800 mb-1">特徵照片</h3>
+      <p class="text-xl font-bold text-rose-600 my-2">未開放</p>
+      <p class="text-sm text-slate-500 mb-5">演習訓練模擬器特徵照片上傳與檢視功能目前尚未開放。</p>
+      <button onclick="closePhotoNoticeModal()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-base transition">
+        確定
+      </button>
     </div>
   </div>
 
@@ -917,6 +1005,7 @@
     const MQTT_TOPIC = 'tw_mci_baling_exercise_live_2026/data';
     const syncChannel = new BroadcastChannel('mci_sim_channel');
 
+    // ★ 官方收治醫院母冊 (長庚 設定為 重度 / 40)
     const HOSPITALS_MASTER = [
       { name: "復興鄉華陵整合醫療站", level: "輕度", cap: 10, dist: 5391 },
       { name: "國軍桃園總醫院", level: "中度", cap: 20, dist: 21343 },
@@ -1115,9 +1204,9 @@
       v2FilterStatus = status;
       document.querySelectorAll('.cmd-st-btn').forEach(b => {
         if (b.innerText === status) {
-          b.className = "cmd-st-btn bg-[#1565c0] text-white px-3.5 py-1 rounded text-[19px] font-bold";
+          b.className = "cmd-st-btn bg-[#1565c0] text-white px-3 py-1 rounded text-xs sm:text-base font-bold";
         } else {
-          b.className = "cmd-st-btn bg-[#2196f3] text-white px-3.5 py-1 rounded text-[19px] font-bold";
+          b.className = "cmd-st-btn bg-[#2196f3] text-white px-3 py-1 rounded text-xs sm:text-base font-bold";
         }
       });
       renderCommanderPatientsView2();
@@ -1125,11 +1214,11 @@
 
     function buildStackedColorCellHtml(bCount, rCount, yCount, gCount) {
       return `
-        <div class="flex flex-col items-start font-mono text-[18px] sm:text-[20px] leading-tight py-1 w-20 mx-auto">
-          <div class="flex items-center space-x-2"><span class="w-4 h-4 bg-[#333] inline-block rounded-none"></span><span class="font-bold">${bCount > 0 ? bCount : '-'}</span></div>
-          <div class="flex items-center space-x-2"><span class="w-4 h-4 bg-[#e6495a] inline-block rounded-none"></span><span class="font-bold">${rCount > 0 ? rCount : '-'}</span></div>
-          <div class="flex items-center space-x-2"><span class="w-4 h-4 bg-[#f6c444] inline-block rounded-none"></span><span class="font-bold">${yCount > 0 ? yCount : '-'}</span></div>
-          <div class="flex items-center space-x-2"><span class="w-4 h-4 bg-[#4caf50] inline-block rounded-none"></span><span class="font-bold">${gCount > 0 ? gCount : '-'}</span></div>
+        <div class="flex flex-col items-start font-mono text-[14px] sm:text-[18px] lg:text-[20px] leading-tight py-1 w-14 sm:w-20 mx-auto">
+          <div class="flex items-center space-x-1.5 sm:space-x-2"><span class="w-3 h-3 sm:w-4 sm:h-4 bg-[#333] inline-block rounded-none"></span><span class="font-bold">${bCount > 0 ? bCount : '-'}</span></div>
+          <div class="flex items-center space-x-1.5 sm:space-x-2"><span class="w-3 h-3 sm:w-4 sm:h-4 bg-[#e6495a] inline-block rounded-none"></span><span class="font-bold">${rCount > 0 ? rCount : '-'}</span></div>
+          <div class="flex items-center space-x-1.5 sm:space-x-2"><span class="w-3 h-3 sm:w-4 sm:h-4 bg-[#f6c444] inline-block rounded-none"></span><span class="font-bold">${yCount > 0 ? yCount : '-'}</span></div>
+          <div class="flex items-center space-x-1.5 sm:space-x-2"><span class="w-3 h-3 sm:w-4 sm:h-4 bg-[#4caf50] inline-block rounded-none"></span><span class="font-bold">${gCount > 0 ? gCount : '-'}</span></div>
         </div>
       `;
     }
@@ -1145,7 +1234,10 @@
       const arrived = list.filter(p => p.arrived).length;
       const inTransit = list.filter(p => !p.arrived && (p.vehicle || (p.hospital && p.status === '送醫中'))).length;
       const onsite = total - arrived - inTransit;
-      const vehicleCount = new Set(list.filter(p => p.vehicle).map(p => p.vehicle)).size;
+      
+      // 正確計算指派車輛數，未派車時為 0
+      const validVehicles = list.filter(p => p.vehicle && p.vehicle.trim() !== '' && p.vehicle !== '其他').map(p => p.vehicle.trim());
+      const vehicleCount = new Set(validVehicles).size;
 
       document.getElementById('m-count-total').innerText = total;
       document.getElementById('m-count-black').innerText = black;
@@ -1177,7 +1269,9 @@
       document.getElementById('sb-pct-arrived').innerText = `${arrivedPct}%`;
       document.getElementById('sb-count-onsite').innerText = onsite;
       document.getElementById('sb-pct-onsite').innerText = `${onSiteRatioPct}%`;
-      document.getElementById('sb-count-vehicles').innerText = vehicleCount > 0 ? vehicleCount : 1;
+      
+      // ★ 修正：真實車輛數計算，清空時為 0 臺
+      document.getElementById('sb-count-vehicles').innerText = vehicleCount;
 
       const stackTotalHtml = buildStackedColorCellHtml(black, red, yellow, green);
       const bOnsite = list.filter(p => !p.arrived && !p.vehicle && p.level === 'black').length;
@@ -1237,7 +1331,7 @@
         row.className = `grid grid-cols-12 py-3 px-3 items-center text-[15px] border-b border-slate-100 hover:bg-sky-50 transition ${rowBg}`;
         row.innerHTML = `
           <div class="col-span-2 text-center font-bold text-slate-800">${idx + 1}</div>
-          <div class="col-span-4 flex items-center space-x-2 pl-2">
+          <div class="col-span-4 flex items-center space-x-2 pl-2 min-w-0">
             <span class="w-3.5 h-3.5 rounded-full ${dotColor} inline-block flex-shrink-0"></span>
             <span class="font-bold text-slate-900 truncate">${p.name || '不詳'}</span>
           </div>
@@ -1251,7 +1345,7 @@
       });
     }
 
-    // 渲染【圖二】傷病患清單 (★ 支援 5/10/50 筆資料動態分頁顯示)
+    // 渲染【圖二】傷病患清單 (每頁顯示 5/10/50 筆)
     function renderCommanderPatientsView2() {
       const tbody = document.getElementById('v2-patients-tbody');
       const search = (document.getElementById('v2-search-input')?.value || '').toLowerCase();
@@ -1293,33 +1387,35 @@
         const rowBg = idx % 2 === 0 ? 'bg-white' : 'bg-[#fbf8ea]';
 
         const tr = document.createElement('tr');
-        tr.className = `h-16 hover:bg-sky-50 text-[24px] sm:text-[27px] ${rowBg}`;
+        tr.className = `h-14 lg:h-16 hover:bg-sky-50 text-xs sm:text-base lg:text-[24px] ${rowBg} whitespace-nowrap`;
         tr.innerHTML = `
           <td class="font-bold">${idx + 1}</td>
-          <td><span class="px-3.5 py-1 rounded-[5px] font-mono font-bold text-[22px] sm:text-[25px] ${codeBadgeColor}">${p.id}</span></td>
-          <td class="font-bold text-slate-900 text-[25px] sm:text-[27px]">${p.name || '不詳'}</td>
+          <td><span class="px-2.5 sm:px-3.5 py-1 rounded-[5px] font-mono font-bold text-xs sm:text-base lg:text-[22px] ${codeBadgeColor}">${p.id}</span></td>
+          <td class="font-bold text-slate-900 text-sm sm:text-lg lg:text-[25px]">${p.name || '不詳'}</td>
           <td>${p.gender || '男'}</td>
           <td class="font-mono">${p.age !== undefined && p.age !== '' ? p.age : '-'}</td>
           <td class="font-bold text-slate-800">${st}</td>
           <td class="font-semibold text-slate-700">${p.vehicle || '-'}</td>
           <td class="font-bold text-slate-900">${p.hospital || '-'}</td>
-          <td class="font-mono text-[20px] sm:text-[23px] leading-tight">${p.time ? `2026/09/28<br>${p.time}` : '-'}</td>
-          <td class="font-mono text-[20px] sm:text-[23px] leading-tight">${p.arrived ? `2026/09/28<br>10:35:10` : '-'}</td>
+          <td class="font-mono text-xs sm:text-sm lg:text-[20px] leading-tight">${p.time ? `2026/09/28<br>${p.time}` : '-'}</td>
+          <td class="font-mono text-xs sm:text-sm lg:text-[20px] leading-tight">${p.arrived ? `2026/09/28<br>10:35:10` : '-'}</td>
           <td class="text-slate-400 font-bold">-</td>
-          <td><button onclick="openPatientInfoModal('${p.id}')" class="bg-[#1e88e5] text-white px-3.5 py-1.5 rounded text-lg font-bold hover:bg-blue-700 shadow-sm transition">檢視</button></td>
-          <td><button onclick="openPatientInfoModal('${p.id}')" class="bg-[#1e88e5] text-white px-3.5 py-1.5 rounded text-lg font-bold hover:bg-blue-700 shadow-sm transition">檢視</button></td>
+          <!-- ★ 特徵照片點擊顯示「未開放」彈窗 -->
+          <td><button onclick="openPhotoNoticeModal()" class="bg-[#1e88e5] text-white px-2.5 sm:px-3.5 py-1 rounded text-xs sm:text-sm lg:text-lg font-bold hover:bg-blue-700 shadow-sm transition">檢視</button></td>
+          <!-- 傷患資訊點擊顯示傷患評估資料 -->
+          <td><button onclick="openPatientInfoModal('${p.id}')" class="bg-[#1e88e5] text-white px-2.5 sm:px-3.5 py-1 rounded text-xs sm:text-sm lg:text-lg font-bold hover:bg-blue-700 shadow-sm transition">檢視</button></td>
         `;
         tbody.appendChild(tr);
       });
     }
 
-    // 渲染【圖三】後送醫院收治情形 (★ 修復：只顯示有送醫中或已到院的醫院)
+    // 渲染【圖三】後送醫院收治情形 (★ 只顯示有送醫中或已到院的醫院)
     function renderCommanderHospitalsView3() {
       const tbody = document.getElementById('v3-hospitals-tbody');
       const search = (document.getElementById('v3-search-input')?.value || '').toLowerCase();
       const list = Object.values(patientsDB);
 
-      // ★ 過濾邏輯：只保留「有送醫中」或「已到院」人數大於 0 的醫院
+      // 只保留有送醫中或已到院人數大於 0 的醫院
       let activeHospList = HOSPITALS_MASTER.filter(hosp => {
         const hospPatients = list.filter(p => p.hospital && p.hospital.trim() === hosp.name.trim());
         const activeCount = hospPatients.filter(p => (p.vehicle || p.hospital || p.arrived)).length;
@@ -1331,7 +1427,7 @@
       }
 
       if (activeHospList.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="py-12 text-slate-400 font-bold bg-[#fbf8ea]">目前尚無任何醫院有送醫中或已到院病患</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="py-12 text-slate-400 font-bold bg-[#fbf8ea] text-sm sm:text-lg">目前尚無任何醫院有送醫中或已到院病患</td></tr>`;
         return;
       }
 
@@ -1361,12 +1457,12 @@
         const rowBg = idx % 2 === 0 ? 'bg-white' : 'bg-[#fbf8ea]';
 
         const tr = document.createElement('tr');
-        tr.className = `h-28 hover:bg-sky-50 text-[24px] sm:text-[27px] ${rowBg}`;
+        tr.className = `h-20 lg:h-28 hover:bg-sky-50 text-xs sm:text-base lg:text-[24px] ${rowBg} whitespace-nowrap`;
         tr.innerHTML = `
-          <td class="font-bold text-slate-900 text-left pl-8 text-[25px] sm:text-[28px]">${hosp.name}</td>
+          <td class="font-bold text-slate-900 text-left pl-4 sm:pl-8 text-sm sm:text-lg lg:text-[25px]">${hosp.name}</td>
           <td class="font-medium text-slate-700">${hosp.level}</td>
           <td class="font-mono text-slate-700 font-bold">${hosp.cap}</td>
-          <td class="font-bold text-slate-900 text-[25px] sm:text-[28px]">${totalSent > 0 ? totalSent : '-'}</td>
+          <td class="font-bold text-slate-900 text-sm sm:text-lg lg:text-[25px]">${totalSent > 0 ? totalSent : '-'}</td>
           <td>${stackTransitHtml}</td>
           <td>${stackArrivedHtml}</td>
           <td>${stackTotalHtml}</td>
@@ -1395,7 +1491,16 @@
       document.getElementById('modal-patient-info').classList.add('hidden');
     }
 
-    // 電腦版手動增刪單筆傷病患
+    // ★ 特徵照片「未開放」專屬彈跳視窗
+    function openPhotoNoticeModal() {
+      document.getElementById('modal-photo-notice').classList.remove('hidden');
+    }
+
+    function closePhotoNoticeModal() {
+      document.getElementById('modal-photo-notice').classList.add('hidden');
+    }
+
+    // 電腦版快速增刪傷病患
     function addNewSinglePatientPrompt() {
       const newId = prompt("請輸入要新增的傷卡編號 (例如 H263651)：");
       if (!newId) return;
@@ -1411,8 +1516,8 @@
         name: '',
         age: 0,
         gender: '男',
-        vehicle: '巴陵91',
-        hospital: '國軍桃園總醫院',
+        vehicle: '',
+        hospital: '',
         arrived: false,
         time: new Date().toLocaleTimeString('zh-TW', { hour12: false }),
         features: '',
@@ -1513,7 +1618,8 @@
           vehSelect.value = '其他';
           vehOther.value = p.vehicle;
         } else {
-          vehSelect.value = '巴陵91';
+          // ★ 修正：預設請選擇
+          vehSelect.value = '';
           vehOther.value = '';
         }
 
@@ -1545,7 +1651,8 @@
         document.getElementById('detail-station').value = '第一救護站';
         document.getElementById('detail-city').value = '桃園市';
         isArrived = false;
-        document.getElementById('detail-vehicle').value = '巴陵91';
+        // ★ 修正：新建傷卡時車輛預設「請選擇」
+        document.getElementById('detail-vehicle').value = '';
         document.getElementById('detail-vehicle-other').value = '';
         document.getElementById('detail-hospital').value = '';
         document.getElementById('detail-hospital-other').value = '';
@@ -1665,45 +1772,102 @@
       showMobileView('list');
     }
 
-    /* ------------------------- A3 列印端邏輯 (放大版) ------------------------- */
+    /* -------------------------------------------------------------------------
+       ★ A3 / A4 自由切換雙面列印生成器
+       ------------------------------------------------------------------------- */
     function renderPrintCards() {
       const container = document.getElementById('print-sheets-container');
+      const pageStyleEl = document.getElementById('dynamic-print-page-style');
+      const guideBox = document.getElementById('print-guide-box');
       container.innerHTML = '';
-      const totalCount = parseInt(document.getElementById('print-count-select').value) || 10;
+
+      const paperType = document.getElementById('print-paper-select')?.value || 'A3';
+      const totalCount = parseInt(document.getElementById('print-count-select')?.value) || 10;
       const baseNum = 263601;
-      const totalSheets = Math.ceil(totalCount / 5);
+
+      let cardsPerSheet = 5;
+      let sheetWidth = '420mm';
+      let sheetHeight = '225mm';
+      let rowWidth = '400mm';
+      let printScaleClass = '';
+
+      if (paperType === 'A3') {
+        pageStyleEl.innerHTML = `@page { size: A3 landscape; margin: 0mm !important; }`;
+        cardsPerSheet = 5;
+        sheetWidth = '420mm';
+        sheetHeight = '225mm';
+        rowWidth = '400mm';
+        guideBox.innerHTML = `
+          <div class="font-bold text-sm text-red-600">⚠️ A3 橫向雙面列印設定指引：</div>
+          <div>1. <b>紙張大小</b>：選擇 <b>A3</b>，配置選 <b>橫向 (Landscape)</b>。</div>
+          <div>2. <b>選項</b>：務必勾選 <b>「背景圖形」</b>（黑色與彩色撕條才能完整印出）。</div>
+          <div>3. <b>雙面列印</b>：選擇 <b>「短邊翻轉 (Flip on Short Edge)」</b>（確保翻面後不倒立，撕條 1:1 重疊）。</div>
+          <div>4. <b>邊界設定</b>：選擇 <b>「無 (None)」</b>，比例設為 <b>100%</b>。</div>
+        `;
+      } else if (paperType === 'A4_2') {
+        pageStyleEl.innerHTML = `@page { size: A4 portrait; margin: 0mm !important; }`;
+        cardsPerSheet = 2;
+        sheetWidth = '210mm';
+        sheetHeight = '240mm';
+        rowWidth = '160mm';
+        guideBox.innerHTML = `
+          <div class="font-bold text-sm text-emerald-700">⚠️ A4 直向雙面列印指引（1:1 原尺寸，每頁 2 張，適合一般印表機）：</div>
+          <div>1. <b>紙張大小</b>：選擇 <b>A4</b>，配置選 <b>直向 (Portrait)</b>。</div>
+          <div>2. <b>選項</b>：務必勾選 <b>「背景圖形」</b>。</div>
+          <div>3. <b>雙面列印</b>：選擇 <b>「長邊翻轉 (Flip on Long Edge)」</b>（如書籍翻頁，正反面 1:1 完美吻合）。</div>
+          <div>4. <b>邊界設定</b>：選擇 <b>「無 (None)」</b>，比例設為 <b>100%</b>。</div>
+        `;
+      } else if (paperType === 'A4_5') {
+        pageStyleEl.innerHTML = `@page { size: A4 landscape; margin: 0mm !important; }`;
+        cardsPerSheet = 5;
+        sheetWidth = '297mm';
+        sheetHeight = '165mm';
+        rowWidth = '283mm';
+        printScaleClass = 'scale-[0.707] origin-top';
+        guideBox.innerHTML = `
+          <div class="font-bold text-sm text-blue-700">⚠️ A4 橫向縮印指引（等比縮印 70%，每頁 5 張）：</div>
+          <div>1. <b>紙張大小</b>：選擇 <b>A4</b>，配置選 <b>橫向 (Landscape)</b>。</div>
+          <div>2. <b>選項</b>：務必勾選 <b>「背景圖形」</b>。</div>
+          <div>3. <b>雙面列印</b>：選擇 <b>「短邊翻轉 (Flip on Short Edge)」</b>。</div>
+          <div>4. <b>邊界設定</b>：選擇 <b>「無 (None)」</b>，比例設為 <b>100%</b>。</div>
+        `;
+      }
+
+      const totalSheets = Math.ceil(totalCount / cardsPerSheet);
 
       for (let s = 0; s < totalSheets; s++) {
         const sheetIds = [];
-        for (let c = 0; c < 5; c++) {
-          const idx = s * 5 + c;
+        for (let c = 0; c < cardsPerSheet; c++) {
+          const idx = s * cardsPerSheet + c;
           if (idx < totalCount) sheetIds.push(`H${baseNum + idx}`);
         }
 
+        // 正面頁面
         const frontPage = document.createElement('div');
-        frontPage.className = "a3-page bg-white shadow-xl mx-auto flex items-start justify-center relative";
-        frontPage.style.width = '420mm';
-        frontPage.style.height = '225mm';
+        frontPage.className = `a3-page bg-white shadow-xl mx-auto flex items-start justify-center relative ${printScaleClass}`;
+        frontPage.style.width = sheetWidth;
+        frontPage.style.height = sheetHeight;
         frontPage.style.paddingTop = '10mm';
 
         const frontRow = document.createElement('div');
         frontRow.className = "flex border-l border-dashed border-slate-400";
-        frontRow.style.width = '400mm';
+        frontRow.style.width = rowWidth;
         frontRow.style.height = '215mm';
 
         sheetIds.forEach(id => frontRow.appendChild(createFrontCardElement(id)));
         frontPage.appendChild(frontRow);
         container.appendChild(frontPage);
 
+        // 背面頁面 (倒序鏡像對齊)
         const backPage = document.createElement('div');
-        backPage.className = "a3-page bg-white shadow-xl mx-auto flex items-start justify-center relative";
-        backPage.style.width = '420mm';
-        backPage.style.height = '225mm';
+        backPage.className = `a3-page bg-white shadow-xl mx-auto flex items-start justify-center relative ${printScaleClass}`;
+        backPage.style.width = sheetWidth;
+        backPage.style.height = sheetHeight;
         backPage.style.paddingTop = '10mm';
 
         const backRow = document.createElement('div');
         backRow.className = "flex border-l border-dashed border-slate-400";
-        backRow.style.width = '400mm';
+        backRow.style.width = rowWidth;
         backRow.style.height = '215mm';
 
         [...sheetIds].reverse().forEach(id => backRow.appendChild(createBackCardElement(id)));
@@ -1738,7 +1902,7 @@
 
     function createFrontCardElement(id) {
       const el = document.createElement('div');
-      el.className = "border-r border-b border-t border-dashed border-slate-400 bg-white flex flex-col justify-between box-border text-slate-900 relative";
+      el.className = "border-r border-b border-t border-dashed border-slate-400 bg-white flex flex-col justify-between box-border text-slate-900 relative flex-shrink-0";
       el.style.width = '80mm';
       el.style.height = '215mm';
 
@@ -1837,7 +2001,7 @@
 
     function createBackCardElement(id) {
       const el = document.createElement('div');
-      el.className = "border-r border-b border-t border-dashed border-slate-400 bg-white flex flex-col justify-between box-border text-slate-900 relative";
+      el.className = "border-r border-b border-t border-dashed border-slate-400 bg-white flex flex-col justify-between box-border text-slate-900 relative flex-shrink-0";
       el.style.width = '80mm';
       el.style.height = '215mm';
 
@@ -1944,7 +2108,7 @@
             檢傷沿線撕下
           </div>
           <div class="flex items-center space-x-1 pl-1">
-            <div id="qr-front-bot-${id}" class="bg-white p-0.5 border border-slate-300"></div>
+            <div id="qr-back-bot-${id}" class="bg-white p-0.5 border border-slate-300"></div>
             <div class="serial-vertical text-[12px] font-bold text-slate-900 leading-none">${id}</div>
           </div>
           <div class="flex-1 text-center font-bold text-[17px] text-slate-900 tracking-widest">
