@@ -597,7 +597,7 @@
           <svg class="w-10 h-10 sm:w-14 sm:h-14 flex-shrink-0" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="46" fill="#f59e0b" stroke="#d97706" stroke-width="2"/>
             <path d="M 50 15 L 60 40 L 88 40 L 65 56 L 73 82 L 50 67 L 27 82 L 35 56 L 12 40 L 40 40 Z" fill="#ef4444"/>
-            <circle cx="50" cy="50" r="18" fill="#1e3a8a"/>
+            <circle cx="50" cy="18" r="18" fill="#1e3a8a"/>
             <polygon points="50,36 53,44 61,41 57,48 64,52 57,55 59,63 52,60 50,68 48,60 41,63 43,55 36,52 43,48 39,41 47,44" fill="white"/>
           </svg>
           <h1 class="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-black text-[#134d7d] tracking-wide">大量傷病患救護管理系統</h1>
@@ -805,7 +805,7 @@
             </div>
 
             <div class="overflow-x-auto custom-scrollbar flex-1 border border-slate-200 rounded">
-              <table class="w-full text-xs sm:text-base lg:text-[24px] text-center border-collapse min-w-[1000px] lg:min-w-[1280px]">
+              <table class="w-full text-xs sm:text-base lg:text-[24px] text-center border-collapse min-w-[1080px] lg:min-w-[1380px]">
                 <thead>
                   <tr class="bg-[#549dbb] text-white font-bold h-11 lg:h-14 text-xs sm:text-base lg:text-[25px]">
                     <th class="w-12 lg:w-16">項次</th>
@@ -821,6 +821,7 @@
                     <th class="w-20 lg:w-28">救護紀錄</th>
                     <th class="w-20 lg:w-28">特徵照片</th>
                     <th class="w-20 lg:w-28">傷患資訊</th>
+                    <th class="w-24 lg:w-36">檢傷分類卡</th>
                   </tr>
                 </thead>
                 <tbody id="v2-patients-tbody" class="divide-y divide-slate-200"></tbody>
@@ -837,7 +838,7 @@
             </div>
           </div>
 
-          <!-- 【圖三】後送醫院收治情形 (只顯示有送醫中或已到院的醫院) -->
+          <!-- 【圖三】後送醫院收治情形 (修復：動態包含所有有送醫紀錄的醫院) -->
           <div id="cmd-sub-view3" class="cmd-view flex-1 flex flex-col space-y-4 hidden">
             <div class="flex flex-wrap items-center gap-1.5 sm:gap-2.5 border-b border-sky-300 pb-1.5">
               <button onclick="switchCommanderSubView('view2')" class="bg-[#7cb7d8] hover:bg-[#68a8cc] text-white px-4 sm:px-6 py-2 rounded-t font-bold text-xs sm:text-base lg:text-[22px] transition">
@@ -1027,21 +1028,21 @@
 
     // 種子數據
     const DEFAULT_SEED_DATA = {
-      "SM00T517": { id: "SM00T517", level: "black", name: "陳帶", age: 0, gender: "男", vehicle: "", hospital: "", arrived: false, time: "10:14:42", departTime: "", phone: "", features: "", notes: "" },
-      "SM00T511": { id: "SM00T511", level: "red", name: "john", age: "", gender: "男", vehicle: "", hospital: "", arrived: false, time: "", departTime: "", phone: "", features: "", notes: "" },
-      "SM00T512": { id: "SM00T512", level: "red", name: "op", age: 0, gender: "男", vehicle: "", hospital: "長庚", arrived: false, time: "10:29:28", departTime: "", phone: "", features: "", notes: "" },
-      "SM00T515": { id: "SM00T515", level: "black", name: "李知", age: 0, gender: "男", vehicle: "", hospital: "", arrived: false, time: "10:15:37", departTime: "", phone: "", features: "", notes: "" },
-      "SM00T814": { id: "SM00T814", level: "red", name: "積積", age: 9, gender: "男", vehicle: "巴陵91", hospital: "國軍桃園總醫院", arrived: false, time: "10:20:11", departTime: "10:20:11", phone: "", features: "很壯", notes: "會一直喊雞雞雞雞 意識清醒 不能行走" },
-      "SM00T516": { id: "SM00T516", level: "red", name: "不詳", age: 34, gender: "男", vehicle: "巴陵91", hospital: "國軍桃園總醫院", arrived: true, time: "10:05:12", departTime: "10:05:12", phone: "", features: "", notes: "" },
-      "SM00T518": { id: "SM00T518", level: "red", name: "不詳", age: 45, gender: "男", vehicle: "大溪91", hospital: "聯新國際醫院", arrived: false, time: "10:18:20", departTime: "10:18:20", phone: "", features: "", notes: "" },
-      "SM00T519": { id: "SM00T519", level: "red", name: "不詳", age: 22, gender: "女", vehicle: "大溪92", hospital: "衛生福利部桃園醫院", arrived: false, time: "10:22:05", departTime: "10:22:05", phone: "", features: "", notes: "" },
-      "SM00T520": { id: "SM00T520", level: "red", name: "不詳", age: 50, gender: "男", vehicle: "圳頂91", hospital: "敏盛綜合醫院", arrived: false, time: "10:25:40", departTime: "10:25:40", phone: "", features: "", notes: "" },
-      "SM00T521": { id: "SM00T521", level: "yellow", name: "不詳", age: 19, gender: "女", vehicle: "八德91", hospital: "聖保祿醫院", arrived: false, time: "10:12:15", departTime: "10:12:15", phone: "", features: "", notes: "" },
-      "SM00T522": { id: "SM00T522", level: "yellow", name: "不詳", age: 60, gender: "男", vehicle: "龍潭91", hospital: "天成醫院", arrived: false, time: "10:16:30", departTime: "10:16:30", phone: "", features: "", notes: "" },
-      "SM00T523": { id: "SM00T523", level: "yellow", name: "不詳", age: 38, gender: "女", vehicle: "高平91", hospital: "國軍桃園總醫院", arrived: false, time: "10:27:50", departTime: "10:27:50", phone: "", features: "", notes: "" },
-      "SM00T524": { id: "SM00T524", level: "green", name: "不詳", age: 25, gender: "男", vehicle: "巴陵92", hospital: "聯新國際醫院", arrived: false, time: "10:19:00", departTime: "10:19:00", phone: "", features: "", notes: "" },
-      "SM00T525": { id: "SM00T525", level: "green", name: "不詳", age: 31, gender: "女", vehicle: "復興92", hospital: "衛生福利部桃園醫院", arrived: false, time: "10:28:10", departTime: "10:28:10", phone: "", features: "", notes: "" },
-      "SM00T526": { id: "SM00T526", level: "black", name: "不詳", age: 72, gender: "男", vehicle: "", hospital: "", arrived: false, time: "", departTime: "", phone: "", features: "", notes: "" }
+      "SM00T517": { id: "SM00T517", level: "black", name: "陳帶", age: 0, gender: "男", vehicle: "", hospital: "", arrived: false, time: "10:14:42", departTime: "", arrivedTime: "", phone: "", features: "", notes: "" },
+      "SM00T511": { id: "SM00T511", level: "red", name: "john", age: "", gender: "男", vehicle: "", hospital: "", arrived: false, time: "", departTime: "", arrivedTime: "", phone: "", features: "", notes: "" },
+      "SM00T512": { id: "SM00T512", level: "red", name: "op", age: 0, gender: "男", vehicle: "", hospital: "長庚", arrived: false, time: "10:29:28", departTime: "", arrivedTime: "", phone: "", features: "", notes: "" },
+      "SM00T515": { id: "SM00T515", level: "black", name: "李知", age: 0, gender: "男", vehicle: "", hospital: "", arrived: false, time: "10:15:37", departTime: "", arrivedTime: "", phone: "", features: "", notes: "" },
+      "SM00T814": { id: "SM00T814", level: "red", name: "積積", age: 9, gender: "男", vehicle: "巴陵91", hospital: "國軍桃園總醫院", arrived: false, time: "10:20:11", departTime: "10:20:11", arrivedTime: "", phone: "", features: "很壯", notes: "會一直喊雞雞雞雞 意識清醒 不能行走" },
+      "SM00T516": { id: "SM00T516", level: "red", name: "不詳", age: 34, gender: "男", vehicle: "巴陵91", hospital: "國軍桃園總醫院", arrived: true, time: "10:05:12", departTime: "10:05:12", arrivedTime: "10:35:10", phone: "", features: "", notes: "" },
+      "SM00T518": { id: "SM00T518", level: "red", name: "不詳", age: 45, gender: "男", vehicle: "大溪91", hospital: "聯新國際醫院", arrived: false, time: "10:18:20", departTime: "10:18:20", arrivedTime: "", phone: "", features: "", notes: "" },
+      "SM00T519": { id: "SM00T519", level: "red", name: "不詳", age: 22, gender: "女", vehicle: "大溪92", hospital: "桃園醫院", arrived: false, time: "10:22:05", departTime: "10:22:05", arrivedTime: "", phone: "", features: "", notes: "" },
+      "SM00T520": { id: "SM00T520", level: "red", name: "不詳", age: 50, gender: "男", vehicle: "圳頂91", hospital: "龍潭敏盛醫院", arrived: false, time: "10:25:40", departTime: "10:25:40", arrivedTime: "", phone: "", features: "", notes: "" },
+      "SM00T521": { id: "SM00T521", level: "yellow", name: "不詳", age: 19, gender: "女", vehicle: "八德91", hospital: "聖保祿醫院", arrived: false, time: "10:12:15", departTime: "10:12:15", arrivedTime: "", phone: "", features: "", notes: "" },
+      "SM00T522": { id: "SM00T522", level: "yellow", name: "不詳", age: 60, gender: "男", vehicle: "龍潭91", hospital: "楊梅天成醫院", arrived: false, time: "10:16:30", departTime: "10:16:30", arrivedTime: "", phone: "", features: "", notes: "" },
+      "SM00T523": { id: "SM00T523", level: "yellow", name: "不詳", age: 38, gender: "女", vehicle: "高平91", hospital: "國軍桃園總醫院", arrived: false, time: "10:27:50", departTime: "10:27:50", arrivedTime: "", phone: "", features: "", notes: "" },
+      "SM00T524": { id: "SM00T524", level: "green", name: "不詳", age: 25, gender: "男", vehicle: "巴陵92", hospital: "聯新國際醫院", arrived: false, time: "10:19:00", departTime: "10:19:00", arrivedTime: "", phone: "", features: "", notes: "" },
+      "SM00T525": { id: "SM00T525", level: "green", name: "不詳", age: 31, gender: "女", vehicle: "復興92", hospital: "桃園醫院", arrived: false, time: "10:28:10", departTime: "10:28:10", arrivedTime: "", phone: "", features: "", notes: "" },
+      "SM00T526": { id: "SM00T526", level: "black", name: "不詳", age: 72, gender: "男", vehicle: "", hospital: "", arrived: false, time: "", departTime: "", arrivedTime: "", phone: "", features: "", notes: "" }
     };
 
     let patientsDB = {};
@@ -1230,7 +1231,7 @@
       const green = list.filter(p => p.level === 'green').length;
 
       const arrived = list.filter(p => p.arrived).length;
-      const inTransit = list.filter(p => !p.arrived && (p.vehicle || (p.hospital && p.status === '送醫中'))).length;
+      const inTransit = list.filter(p => !p.arrived && (p.vehicle || (p.hospital && p.status === '送醫中') || (p.departTime && !p.arrived))).length;
       const onsite = total - arrived - inTransit;
       
       const validVehicles = list.filter(p => p.vehicle && p.vehicle.trim() !== '' && p.vehicle !== '其他').map(p => p.vehicle.trim());
@@ -1270,16 +1271,16 @@
       document.getElementById('sb-count-vehicles').innerText = vehicleCount;
 
       const stackTotalHtml = buildStackedColorCellHtml(black, red, yellow, green);
-      const bOnsite = list.filter(p => !p.arrived && !p.vehicle && p.level === 'black').length;
-      const rOnsite = list.filter(p => !p.arrived && !p.vehicle && p.level === 'red').length;
-      const yOnsite = list.filter(p => !p.arrived && !p.vehicle && p.level === 'yellow').length;
-      const gOnsite = list.filter(p => !p.arrived && !p.vehicle && p.level === 'green').length;
+      const bOnsite = list.filter(p => !p.arrived && !p.vehicle && !p.departTime && p.level === 'black').length;
+      const rOnsite = list.filter(p => !p.arrived && !p.vehicle && !p.departTime && p.level === 'red').length;
+      const yOnsite = list.filter(p => !p.arrived && !p.vehicle && !p.departTime && p.level === 'yellow').length;
+      const gOnsite = list.filter(p => !p.arrived && !p.vehicle && !p.departTime && p.level === 'green').length;
       const stackOnsiteHtml = buildStackedColorCellHtml(bOnsite, rOnsite, yOnsite, gOnsite);
 
-      const bTransit = list.filter(p => !p.arrived && (p.vehicle || (p.hospital && p.status === '送醫中')) && p.level === 'black').length;
-      const rTransit = list.filter(p => !p.arrived && (p.vehicle || (p.hospital && p.status === '送醫中')) && p.level === 'red').length;
-      const yTransit = list.filter(p => !p.arrived && (p.vehicle || (p.hospital && p.status === '送醫中')) && p.level === 'yellow').length;
-      const gTransit = list.filter(p => !p.arrived && (p.vehicle || (p.hospital && p.status === '送醫中')) && p.level === 'green').length;
+      const bTransit = list.filter(p => !p.arrived && (p.vehicle || (p.hospital && p.status === '送醫中') || p.departTime) && p.level === 'black').length;
+      const rTransit = list.filter(p => !p.arrived && (p.vehicle || (p.hospital && p.status === '送醫中') || p.departTime) && p.level === 'red').length;
+      const yTransit = list.filter(p => !p.arrived && (p.vehicle || (p.hospital && p.status === '送醫中') || p.departTime) && p.level === 'yellow').length;
+      const gTransit = list.filter(p => !p.arrived && (p.vehicle || (p.hospital && p.status === '送醫中') || p.departTime) && p.level === 'green').length;
       const stackTransitHtml = buildStackedColorCellHtml(bTransit, rTransit, yTransit, gTransit);
 
       const bArrived = list.filter(p => p.arrived && p.level === 'black').length;
@@ -1341,6 +1342,12 @@
       });
     }
 
+    // ★ 連結至檢傷分類卡並可點到院
+    function navigateToTriageDetail(id) {
+      switchTab('tab-mobile');
+      openPatientForm(id);
+    }
+
     // 渲染【圖二】傷病患清單
     function renderCommanderPatientsView2() {
       const tbody = document.getElementById('v2-patients-tbody');
@@ -1354,7 +1361,7 @@
       }
       if (v2FilterStatus !== 'ALL') {
         list = list.filter(p => {
-          const st = p.arrived ? '已到院' : (p.vehicle || p.hospital ? '送醫中' : '現場');
+          const st = p.arrived ? '已到院' : ((p.vehicle || p.hospital || p.departTime) ? '送醫中' : '現場');
           return st === v2FilterStatus;
         });
       }
@@ -1367,13 +1374,13 @@
       document.getElementById('v2-pagination-info').innerText = `顯示第 1 至 ${Math.min(pageSize, totalMatching)} 筆資料，共 ${totalMatching} 筆`;
 
       if (displayList.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="13" class="py-12 text-slate-400 font-bold bg-[#fbf8ea]">無資料</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="14" class="py-12 text-slate-400 font-bold bg-[#fbf8ea]">無資料</td></tr>`;
         return;
       }
 
       tbody.innerHTML = '';
       displayList.forEach((p, idx) => {
-        const st = p.arrived ? '已到院' : (p.vehicle || p.hospital ? '送醫中' : '現場');
+        const st = p.arrived ? '已到院' : ((p.vehicle || p.hospital || p.departTime) ? '送醫中' : '現場');
         
         let codeBadgeColor = 'bg-[#1c1c1e] text-white';
         if (p.level === 'red') codeBadgeColor = 'bg-[#e55353] text-white';
@@ -1394,26 +1401,51 @@
           <td class="font-semibold text-slate-700">${p.vehicle || '-'}</td>
           <td class="font-bold text-slate-900">${p.hospital || '-'}</td>
           <td class="font-mono text-xs sm:text-sm lg:text-[20px] leading-tight">${p.departTime ? `2026/09/28<br>${p.departTime}` : '-'}</td>
-          <td class="font-mono text-xs sm:text-sm lg:text-[20px] leading-tight">${p.arrived ? `2026/09/28<br>10:35:10` : '-'}</td>
+          <td class="font-mono text-xs sm:text-sm lg:text-[20px] leading-tight">${(p.arrived && (p.arrivedTime || p.time)) ? `2026/09/28<br>${p.arrivedTime || '10:35:10'}` : '-'}</td>
           <td class="text-slate-400 font-bold">-</td>
           <td><button onclick="openPhotoNoticeModal()" class="bg-[#1e88e5] text-white px-2.5 sm:px-3.5 py-1 rounded text-xs sm:text-sm lg:text-lg font-bold hover:bg-blue-700 shadow-sm transition">檢視</button></td>
           <td><button onclick="openPatientInfoModal('${p.id}')" class="bg-[#1e88e5] text-white px-2.5 sm:px-3.5 py-1 rounded text-xs sm:text-sm lg:text-lg font-bold hover:bg-blue-700 shadow-sm transition">檢視</button></td>
+          <td>
+            <button onclick="navigateToTriageDetail('${p.id}')" class="${p.arrived ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-[#ff7043] hover:bg-[#f4511e]'} text-white px-2.5 sm:px-3.5 py-1 rounded text-xs sm:text-sm lg:text-lg font-bold shadow-sm transition whitespace-nowrap">
+              ${p.arrived ? '已到院(檢視)' : '點到院'}
+            </button>
+          </td>
         `;
         tbody.appendChild(tr);
       });
     }
 
-    // 渲染【圖三】後送醫院收治情形
+    // ★ 修復【圖三】後送醫院收治情形：動態涵蓋所有有送醫紀錄的醫院
     function renderCommanderHospitalsView3() {
       const tbody = document.getElementById('v3-hospitals-tbody');
       const search = (document.getElementById('v3-search-input')?.value || '').toLowerCase();
       const list = Object.values(patientsDB);
 
-      let activeHospList = HOSPITALS_MASTER.filter(hosp => {
-        const hospPatients = list.filter(p => p.hospital && p.hospital.trim() === hosp.name.trim());
-        const activeCount = hospPatients.filter(p => (p.vehicle || p.hospital || p.arrived)).length;
-        return activeCount > 0;
+      // 動態收集所有病患實際指定的後送醫院清單
+      const hospMap = new Map();
+
+      list.forEach(p => {
+        const hospName = p.hospital ? p.hospital.trim() : '';
+        if (!hospName) return;
+
+        if (!hospMap.has(hospName)) {
+          // 優先在母冊比對等級與可容納人數
+          const matched = HOSPITALS_MASTER.find(h => 
+            h.name === hospName || 
+            h.name.includes(hospName) || 
+            hospName.includes(h.name)
+          );
+
+          hospMap.set(hospName, {
+            name: hospName,
+            level: matched ? matched.level : "其他",
+            cap: matched ? matched.cap : 20,
+            dist: matched ? matched.dist : 99999
+          });
+        }
       });
+
+      let activeHospList = Array.from(hospMap.values());
 
       if (search) {
         activeHospList = activeHospList.filter(h => h.name.toLowerCase().includes(search));
@@ -1429,10 +1461,10 @@
         const hospPatients = list.filter(p => p.hospital && p.hospital.trim() === hosp.name.trim());
         const totalSent = hospPatients.length;
 
-        const bTransit = hospPatients.filter(p => !p.arrived && (p.vehicle || p.hospital) && p.level === 'black').length;
-        const rTransit = hospPatients.filter(p => !p.arrived && (p.vehicle || p.hospital) && p.level === 'red').length;
-        const yTransit = hospPatients.filter(p => !p.arrived && (p.vehicle || p.hospital) && p.level === 'yellow').length;
-        const gTransit = hospPatients.filter(p => !p.arrived && (p.vehicle || p.hospital) && p.level === 'green').length;
+        const bTransit = hospPatients.filter(p => !p.arrived && (p.vehicle || p.hospital || p.departTime) && p.level === 'black').length;
+        const rTransit = hospPatients.filter(p => !p.arrived && (p.vehicle || p.hospital || p.departTime) && p.level === 'red').length;
+        const yTransit = hospPatients.filter(p => !p.arrived && (p.vehicle || p.hospital || p.departTime) && p.level === 'yellow').length;
+        const gTransit = hospPatients.filter(p => !p.arrived && (p.vehicle || p.hospital || p.departTime) && p.level === 'green').length;
         const stackTransitHtml = buildStackedColorCellHtml(bTransit, rTransit, yTransit, gTransit);
 
         const bArrived = hospPatients.filter(p => p.arrived && p.level === 'black').length;
@@ -1511,6 +1543,7 @@
         arrived: false,
         time: new Date().toLocaleTimeString('zh-TW', { hour12: false }),
         departTime: '',
+        arrivedTime: '',
         features: '',
         notes: ''
       };
@@ -1740,12 +1773,25 @@
       // 判斷是否已選擇完後送車輛+後送醫院
       const hasBothVehicleAndHospital = Boolean(vehicle && vehicle.trim() !== '' && hospital && hospital.trim() !== '');
       const prevPatient = patientsDB[currentEditId];
-      let departTime = '';
+      let departTime = (prevPatient && prevPatient.departTime) ? prevPatient.departTime : '';
+      let arrivedTime = (prevPatient && prevPatient.arrivedTime) ? prevPatient.arrivedTime : '';
 
+      // ★ 當點選出勤的救護車+後送的醫院+儲存，就在離開現場欄位顯示時間
       if (hasBothVehicleAndHospital) {
-        departTime = (prevPatient && prevPatient.departTime) ? prevPatient.departTime : nowTimeStr;
+        if (!departTime) {
+          departTime = nowTimeStr;
+        }
       } else {
         departTime = '';
+      }
+
+      // ★ 當點選到達醫院+儲存，記錄到院時間
+      if (isArrived) {
+        if (!arrivedTime) {
+          arrivedTime = nowTimeStr;
+        }
+      } else {
+        arrivedTime = '';
       }
 
       patientsDB[currentEditId] = {
@@ -1764,7 +1810,8 @@
         arrived: isArrived,
         temsis: document.getElementById('detail-temsis').value.trim(),
         time: nowTimeStr,
-        departTime: departTime
+        departTime: departTime,
+        arrivedTime: arrivedTime
       };
 
       document.getElementById('detail-last-update').innerText = `2026/09/28 ${nowTimeStr}`;
